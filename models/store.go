@@ -40,16 +40,17 @@ func NewStore() *Store {
 func (s *Store) initSampleData() {
 	now := time.Now()
 	
-	// Sample bouquets
+	// Sample bouquets linked to providers
 	s.bouquets[1] = Bouquet{
 		ID:          1,
 		Name:        "Basic Package",
 		Description: "Essential channels for everyday viewing",
+		ProviderID:  1, // BBC
 		Channels: []Channel{
-			{Name: "BBC One", Manifest: "https://manifest.bbc.co.uk/bbc1/manifest.mpd", KeyKid: "bbc1-key-001", VideoCodec: "x265", AudioCodec: "AAC", Resolution: "1080p", VideoBitrate: "5000k", AudioBitrate: "128k", Quality: "High"},
-			{Name: "BBC Two", Manifest: "https://manifest.bbc.co.uk/bbc2/manifest.mpd", KeyKid: "bbc2-key-001", VideoCodec: "x264", AudioCodec: "AAC", Resolution: "720p", VideoBitrate: "3000k", AudioBitrate: "128k", Quality: "Medium"},
-			{Name: "ITV", Manifest: "https://manifest.itv.com/itv1/manifest.mpd", KeyKid: "itv1-key-001", VideoCodec: "x265", AudioCodec: "AC3", Resolution: "1080p", VideoBitrate: "6000k", AudioBitrate: "256k", Quality: "High"},
-			{Name: "Channel 4", Manifest: "https://manifest.channel4.com/c4/manifest.mpd", KeyKid: "c4-key-001", VideoCodec: "x264", AudioCodec: "AAC", Resolution: "720p", VideoBitrate: "3500k", AudioBitrate: "128k", Quality: "Medium"},
+			{ID: 1, Name: "BBC One", Manifest: "https://manifest.bbc.co.uk/bbc1/manifest.mpd", KeyKid: "bbc1-key-001", VideoCodec: "x265", AudioCodec: "AAC", Resolution: "1080p", VideoBitrate: "5000k", AudioBitrate: "128k", Quality: "High", Running: false, RemuxPort: 0},
+			{ID: 2, Name: "BBC Two", Manifest: "https://manifest.bbc.co.uk/bbc2/manifest.mpd", KeyKid: "bbc2-key-001", VideoCodec: "x264", AudioCodec: "AAC", Resolution: "720p", VideoBitrate: "3000k", AudioBitrate: "128k", Quality: "Medium", Running: false, RemuxPort: 0},
+			{ID: 3, Name: "ITV", Manifest: "https://manifest.itv.com/itv1/manifest.mpd", KeyKid: "itv1-key-001", VideoCodec: "x265", AudioCodec: "AC3", Resolution: "1080p", VideoBitrate: "6000k", AudioBitrate: "256k", Quality: "High", Running: false, RemuxPort: 0},
+			{ID: 4, Name: "Channel 4", Manifest: "https://manifest.channel4.com/c4/manifest.mpd", KeyKid: "c4-key-001", VideoCodec: "x264", AudioCodec: "AAC", Resolution: "720p", VideoBitrate: "3500k", AudioBitrate: "128k", Quality: "Medium", Running: false, RemuxPort: 0},
 		},
 		CreatedAt:   now,
 		UpdatedAt:   now,
@@ -58,12 +59,13 @@ func (s *Store) initSampleData() {
 		ID:          2,
 		Name:        "Premium Package", 
 		Description: "Complete entertainment experience with sports and movies",
+		ProviderID:  2, // Sky
 		Channels: []Channel{
-			{Name: "BBC One", Manifest: "https://manifest.bbc.co.uk/bbc1/manifest.mpd", KeyKid: "bbc1-key-001", VideoCodec: "x265", AudioCodec: "AAC", Resolution: "1080p", VideoBitrate: "5000k", AudioBitrate: "128k", Quality: "High"},
-			{Name: "BBC Two", Manifest: "https://manifest.bbc.co.uk/bbc2/manifest.mpd", KeyKid: "bbc2-key-001", VideoCodec: "x264", AudioCodec: "AAC", Resolution: "720p", VideoBitrate: "3000k", AudioBitrate: "128k", Quality: "Medium"},
-			{Name: "Sky Sports", Manifest: "https://manifest.sky.com/sports/manifest.mpd", KeyKid: "sky-sports-key-001", VideoCodec: "x265", AudioCodec: "AC3", Resolution: "2160p", VideoBitrate: "15000k", AudioBitrate: "256k", Quality: "Ultra"},
-			{Name: "Sky Movies", Manifest: "https://manifest.sky.com/movies/manifest.mpd", KeyKid: "sky-movies-key-001", VideoCodec: "x265", AudioCodec: "DTS", Resolution: "2160p", VideoBitrate: "20000k", AudioBitrate: "512k", Quality: "Ultra"},
-			{Name: "Discovery", Manifest: "https://manifest.discovery.com/main/manifest.mpd", KeyKid: "discovery-key-001", VideoCodec: "x264", AudioCodec: "AAC", Resolution: "1080p", VideoBitrate: "4000k", AudioBitrate: "128k", Quality: "Medium"},
+			{ID: 1, Name: "BBC One", Manifest: "https://manifest.bbc.co.uk/bbc1/manifest.mpd", KeyKid: "bbc1-key-001", VideoCodec: "x265", AudioCodec: "AAC", Resolution: "1080p", VideoBitrate: "5000k", AudioBitrate: "128k", Quality: "High", Running: false, RemuxPort: 0},
+			{ID: 2, Name: "BBC Two", Manifest: "https://manifest.bbc.co.uk/bbc2/manifest.mpd", KeyKid: "bbc2-key-001", VideoCodec: "x264", AudioCodec: "AAC", Resolution: "720p", VideoBitrate: "3000k", AudioBitrate: "128k", Quality: "Medium", Running: false, RemuxPort: 0},
+			{ID: 5, Name: "Sky Sports", Manifest: "https://manifest.sky.com/sports/manifest.mpd", KeyKid: "sky-sports-key-001", VideoCodec: "x265", AudioCodec: "AC3", Resolution: "2160p", VideoBitrate: "15000k", AudioBitrate: "256k", Quality: "Ultra", Running: false, RemuxPort: 0},
+			{ID: 6, Name: "Sky Movies", Manifest: "https://manifest.sky.com/movies/manifest.mpd", KeyKid: "sky-movies-key-001", VideoCodec: "x265", AudioCodec: "DTS", Resolution: "2160p", VideoBitrate: "20000k", AudioBitrate: "512k", Quality: "Ultra", Running: false, RemuxPort: 0},
+			{ID: 7, Name: "Discovery", Manifest: "https://manifest.discovery.com/main/manifest.mpd", KeyKid: "discovery-key-001", VideoCodec: "x264", AudioCodec: "AAC", Resolution: "1080p", VideoBitrate: "4000k", AudioBitrate: "128k", Quality: "Medium", Running: false, RemuxPort: 0},
 		},
 		CreatedAt:   now,
 		UpdatedAt:   now,
@@ -107,6 +109,8 @@ func (s *Store) initSampleData() {
 		VideoBitrate: "5000k",
 		AudioBitrate: "128k",
 		Quality:      "High",
+		Running:      false,
+		RemuxPort:    0,
 		CreatedAt:    now,
 		UpdatedAt:    now,
 	}
@@ -121,6 +125,8 @@ func (s *Store) initSampleData() {
 		VideoBitrate: "3000k",
 		AudioBitrate: "128k",
 		Quality:      "Medium",
+		Running:      false,
+		RemuxPort:    0,
 		CreatedAt:    now,
 		UpdatedAt:    now,
 	}
@@ -135,10 +141,76 @@ func (s *Store) initSampleData() {
 		VideoBitrate: "6000k",
 		AudioBitrate: "256k",
 		Quality:      "High",
+		Running:      false,
+		RemuxPort:    0,
 		CreatedAt:    now,
 		UpdatedAt:    now,
 	}
-	s.nextChannelID = 4
+	s.channels[4] = Channel{
+		ID:           4,
+		Name:         "Channel 4",
+		Manifest:     "https://manifest.channel4.com/c4/manifest.mpd",
+		KeyKid:       "c4-key-001",
+		VideoCodec:   "x264",
+		AudioCodec:   "AAC",
+		Resolution:   "720p",
+		VideoBitrate: "3500k",
+		AudioBitrate: "128k",
+		Quality:      "Medium",
+		Running:      false,
+		RemuxPort:    0,
+		CreatedAt:    now,
+		UpdatedAt:    now,
+	}
+	s.channels[5] = Channel{
+		ID:           5,
+		Name:         "Sky Sports",
+		Manifest:     "https://manifest.sky.com/sports/manifest.mpd",
+		KeyKid:       "sky-sports-key-001",
+		VideoCodec:   "x265",
+		AudioCodec:   "AC3",
+		Resolution:   "2160p",
+		VideoBitrate: "15000k",
+		AudioBitrate: "256k",
+		Quality:      "Ultra",
+		Running:      false,
+		RemuxPort:    0,
+		CreatedAt:    now,
+		UpdatedAt:    now,
+	}
+	s.channels[6] = Channel{
+		ID:           6,
+		Name:         "Sky Movies",
+		Manifest:     "https://manifest.sky.com/movies/manifest.mpd",
+		KeyKid:       "sky-movies-key-001",
+		VideoCodec:   "x265",
+		AudioCodec:   "DTS",
+		Resolution:   "2160p",
+		VideoBitrate: "20000k",
+		AudioBitrate: "512k",
+		Quality:      "Ultra",
+		Running:      false,
+		RemuxPort:    0,
+		CreatedAt:    now,
+		UpdatedAt:    now,
+	}
+	s.channels[7] = Channel{
+		ID:           7,
+		Name:         "Discovery",
+		Manifest:     "https://manifest.discovery.com/main/manifest.mpd",
+		KeyKid:       "discovery-key-001",
+		VideoCodec:   "x264",
+		AudioCodec:   "AAC",
+		Resolution:   "1080p",
+		VideoBitrate: "4000k",
+		AudioBitrate: "128k",
+		Quality:      "Medium",
+		Running:      false,
+		RemuxPort:    0,
+		CreatedAt:    now,
+		UpdatedAt:    now,
+	}
+	s.nextChannelID = 8
 	
 	// Sample providers
 	s.providers[1] = Provider{
@@ -217,6 +289,47 @@ func (s *Store) DeleteBouquet(id int) bool {
 	}
 	delete(s.bouquets, id)
 	return true
+}
+
+// GetBouquetsByProvider returns all bouquets for a specific provider
+func (s *Store) GetBouquetsByProvider(providerID int) []Bouquet {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
+	
+	var bouquets []Bouquet
+	for _, bouquet := range s.bouquets {
+		if bouquet.ProviderID == providerID {
+			bouquets = append(bouquets, bouquet)
+		}
+	}
+	return bouquets
+}
+
+// GetProvidersWithBouquets returns all providers with their associated bouquets
+func (s *Store) GetProvidersWithBouquets() []ProviderWithBouquets {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
+	
+	var providersWithBouquets []ProviderWithBouquets
+	for _, provider := range s.providers {
+		pwb := ProviderWithBouquets{
+			Provider: provider,
+			Bouquets: s.getBouquetsByProviderUnsafe(provider.ID),
+		}
+		providersWithBouquets = append(providersWithBouquets, pwb)
+	}
+	return providersWithBouquets
+}
+
+// getBouquetsByProviderUnsafe is the unsafe version for internal use (no mutex)
+func (s *Store) getBouquetsByProviderUnsafe(providerID int) []Bouquet {
+	var bouquets []Bouquet
+	for _, bouquet := range s.bouquets {
+		if bouquet.ProviderID == providerID {
+			bouquets = append(bouquets, bouquet)
+		}
+	}
+	return bouquets
 }
 
 // User operations
@@ -327,6 +440,70 @@ func (s *Store) DeleteChannel(id int) bool {
 	}
 	delete(s.channels, id)
 	return true
+}
+
+// StartChannel starts a channel and assigns a remux port
+func (s *Store) StartChannel(channelID int) (int, bool) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	
+	channel, exists := s.channels[channelID]
+	if !exists {
+		return 0, false
+	}
+	
+	if channel.Running {
+		return channel.RemuxPort, true // Already running
+	}
+	
+	// Assign a random port for remuxer (8000-9000 range)
+	port := 8000 + (channelID * 10) // Simple port assignment
+	channel.Running = true
+	channel.RemuxPort = port
+	channel.UpdatedAt = time.Now()
+	s.channels[channelID] = channel
+	
+	return port, true
+}
+
+// StopChannel stops a channel and releases the remux port
+func (s *Store) StopChannel(channelID int) bool {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	
+	channel, exists := s.channels[channelID]
+	if !exists {
+		return false
+	}
+	
+	channel.Running = false
+	channel.RemuxPort = 0
+	channel.UpdatedAt = time.Now()
+	s.channels[channelID] = channel
+	
+	return true
+}
+
+// UpdateChannelInBouquet updates a channel within all bouquets that contain it
+func (s *Store) UpdateChannelInBouquet(channelID int) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	
+	channel, exists := s.channels[channelID]
+	if !exists {
+		return
+	}
+	
+	// Update the channel in all bouquets that contain it
+	for bouquetID, bouquet := range s.bouquets {
+		for i, ch := range bouquet.Channels {
+			if ch.Name == channel.Name && ch.Manifest == channel.Manifest {
+				bouquet.Channels[i] = channel
+				bouquet.UpdatedAt = time.Now()
+				s.bouquets[bouquetID] = bouquet
+			}
+		}
+	}
 }
 
 // Provider operations

@@ -11,10 +11,11 @@ func main() {
 	// Set up HTTP routes
 	http.HandleFunc("/", handlers.HomeHandler)
 	http.HandleFunc("/health", handlers.HealthHandler)
-	http.HandleFunc("/providers", handlers.ProvidersHandler)
-	http.HandleFunc("/providers-management", handlers.ProvidersManagementHandler)
+	http.HandleFunc("/providers", handlers.ProvidersHandler)  // Main providers page with bouquets
 	http.HandleFunc("/channels", handlers.ChannelsHandler)
 	http.HandleFunc("/users", handlers.UsersHandler)
+	http.HandleFunc("/channel/start", handlers.ChannelStartHandler)  // New channel start endpoint
+	http.HandleFunc("/channel/stop", handlers.ChannelStopHandler)    // New channel stop endpoint
 
 	// Server configuration
 	const port = ":8080"
