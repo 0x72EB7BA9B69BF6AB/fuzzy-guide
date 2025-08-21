@@ -9,13 +9,19 @@ type HomePageData struct {
 	CurrentTime string
 }
 
-// Bouquet represents a package/bundle that can be configured by providers
+// Channel represents a channel with its execution properties
+type Channel struct {
+	Name     string `json:"name"`
+	Manifest string `json:"manifest"`
+	KeyKid   string `json:"key_kid"`
+}
+
+// Bouquet represents a package/bundle that can be configured by administrators
 type Bouquet struct {
 	ID          int       `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
-	Price       float64   `json:"price"`
-	Channels    []string  `json:"channels"`
+	Channels    []Channel `json:"channels"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
