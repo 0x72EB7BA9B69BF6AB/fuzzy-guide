@@ -1,4 +1,4 @@
-# Fuzzy Guide
+# Fuzzy
 
 A clean, simple, and efficient Go web server with a home page.
 
@@ -26,12 +26,12 @@ cd fuzzy-guide
 
 2. Build the application:
 ```bash
-go build -o fuzzy-guide main.go
+go build -o fuzzy main.go
 ```
 
 3. Run the server:
 ```bash
-./fuzzy-guide
+./fuzzy
 ```
 
 Or run directly with Go:
@@ -68,7 +68,7 @@ The server will start on port 8080 by default.
 ### Building for Production
 
 ```bash
-go build -ldflags="-s -w" -o fuzzy-guide main.go
+go build -ldflags="-s -w" -o fuzzy main.go
 ```
 
 This creates an optimized binary with reduced size.
@@ -77,10 +77,17 @@ This creates an optimized binary with reduced size.
 
 ```
 fuzzy-guide/
-├── main.go          # Main server application
-├── go.mod           # Go module file
-├── README.md        # Project documentation
-└── LICENSE          # License file
+├── main.go              # Main server application with routing
+├── handlers/            # HTTP request handlers
+│   ├── home.go         # Home page handler
+│   └── health.go       # Health check handler
+├── models/             # Data structures
+│   └── page.go         # Page data models
+├── templates/          # HTML templates
+│   └── home.html      # Home page template
+├── go.mod              # Go module file
+├── README.md           # Project documentation
+└── LICENSE             # License file
 ```
 
 ## License
