@@ -26,12 +26,12 @@ cd fuzzy-guide
 
 2. Build the application:
 ```bash
-go build -o fuzzy main.go
+go build -o fuzey main.go
 ```
 
 3. Run the server:
 ```bash
-./fuzzy
+./fuzey
 ```
 
 Or run directly with Go:
@@ -68,7 +68,7 @@ The server will start on port 8080 by default.
 ### Building for Production
 
 ```bash
-go build -ldflags="-s -w" -o fuzzy main.go
+go build -ldflags="-s -w" -o fuzey main.go
 ```
 
 This creates an optimized binary with reduced size.
