@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .time {
+            color: #888;
+            font-size: 0.9em;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{.WelcomeMsg}}</h1>
+        <p>This is a clean, simple, and efficient Go web server. The server is designed to be lightweight and easy to understand.</p>
+        <p>Features:</p>
+        <ul>
+            <li>Clean Go code with proper error handling</li>
+            <li>Simple HTML template rendering</li>
+            <li>Responsive design</li>
+            <li>Efficient HTTP routing</li>
+        </ul>
+        <div class="time">Current server time: {{.CurrentTime}}</div>
+    </div>
+</body>
+</html>
