@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #444;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        .navigation {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .navigation a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .navigation a:hover {
+            background-color: #0056b3;
+        }
+        .form-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        table tr:hover {
+            background-color: #f8f9fa;
+        }
+        .actions {
+            white-space: nowrap;
+        }
+        .actions button, .actions a {
+            margin-right: 10px;
+        }
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .edit-form {
+            display: none;
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+    <script>
+        function showEditForm(id) {
+            document.getElementById('edit-form-' + id).style.display = 'block';
+        }
+        function hideEditForm(id) {
+            document.getElementById('edit-form-' + id).style.display = 'none';
+        }
+        function confirmDelete(id, name) {
+            return confirm('Are you sure you want to delete the channel "' + name + '"?');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Channel Management</h1>
+        
+        <div class="navigation">
+            <a href="/">Home</a>
+            <a href="/providers">Bouquets</a>
+            <a href="/providers-management">Providers</a>
+            <a href="/channels">Channels</a>
+            <a href="/users">Users</a>
+        </div>
+
+        {{if .Message}}
+        <div class="message success">{{.Message}}</div>
+        {{end}}
+        
+        {{if .Error}}
+        <div class="message error">{{.Error}}</div>
+        {{end}}
+
+        <!-- Create New Channel Form -->
+        <div class="form-section">
+            <h2>Create New Channel</h2>
+            <form method="post">
+                <input type="hidden" name="action" value="create">
+                <div class="form-group">
+                    <label for="name">Channel Name:</label>
+                    <input type="text" id="name" name="name" required placeholder="BBC One">
+                </div>
+                <div class="form-group">
+                    <label for="manifest">Manifest URL:</label>
+                    <input type="url" id="manifest" name="manifest" required placeholder="https://manifest.bbc.co.uk/bbc1/manifest.mpd">
+                </div>
+                <div class="form-group">
+                    <label for="key_kid">Key:Kid:</label>
+                    <input type="text" id="key_kid" name="key_kid" required placeholder="bbc1-key-001">
+                </div>
+                <button type="submit" class="btn">Create Channel</button>
+            </form>
+        </div>
+
+        <!-- Channels List -->
+        <h2>Existing Channels</h2>
+        {{if .Channels}}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Manifest URL</th>
+                    <th>Key:Kid</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Channels}}
+                <tr>
+                    <td>{{.ID}}</td>
+                    <td>{{.Name}}</td>
+                    <td><small>{{.Manifest}}</small></td>
+                    <td>{{.KeyKid}}</td>
+                    <td>{{.CreatedAt.Format "2006-01-02 15:04"}}</td>
+                    <td class="actions">
+                        <button type="button" class="btn btn-warning" onclick="showEditForm({{.ID}})">Edit</button>
+                        <a href="?delete={{.ID}}" class="btn btn-danger" onclick="return confirmDelete({{.ID}}, '{{.Name}}')">Delete</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div id="edit-form-{{.ID}}" class="edit-form">
+                            <h3>Edit Channel: {{.Name}}</h3>
+                            <form method="post">
+                                <input type="hidden" name="action" value="update">
+                                <input type="hidden" name="id" value="{{.ID}}">
+                                <div class="form-group">
+                                    <label for="edit-name-{{.ID}}">Channel Name:</label>
+                                    <input type="text" id="edit-name-{{.ID}}" name="name" value="{{.Name}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-manifest-{{.ID}}">Manifest URL:</label>
+                                    <input type="url" id="edit-manifest-{{.ID}}" name="manifest" value="{{.Manifest}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-key-kid-{{.ID}}">Key:Kid:</label>
+                                    <input type="text" id="edit-key-kid-{{.ID}}" name="key_kid" value="{{.KeyKid}}" required>
+                                </div>
+                                <button type="submit" class="btn">Update Channel</button>
+                                <button type="button" class="btn btn-warning" onclick="hideEditForm({{.ID}})">Cancel</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        {{else}}
+        <p>No channels found. Create your first channel using the form above.</p>
+        {{end}}
+    </div>
+</body>
+</html>

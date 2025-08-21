@@ -11,9 +11,24 @@ type HomePageData struct {
 
 // Channel represents a channel with its execution properties
 type Channel struct {
+	ID       int    `json:"id"`
 	Name     string `json:"name"`
 	Manifest string `json:"manifest"`
 	KeyKid   string `json:"key_kid"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// Provider represents a streaming provider
+type Provider struct {
+	ID          int       `json:"id"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	URL         string    `json:"url"`
+	APIKey      string    `json:"api_key"`
+	Active      bool      `json:"active"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 // Bouquet represents a package/bundle that can be configured by administrators
@@ -53,4 +68,20 @@ type UsersPageData struct {
 	Users   []User
 	Message string
 	Error   string
+}
+
+// ChannelsPageData represents the data structure for the channels page template
+type ChannelsPageData struct {
+	Title    string
+	Channels []Channel
+	Message  string
+	Error    string
+}
+
+// ProvidersManagementPageData represents the data structure for the providers management page template
+type ProvidersManagementPageData struct {
+	Title     string
+	Providers []Provider
+	Message   string
+	Error     string
 }

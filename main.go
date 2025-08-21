@@ -12,6 +12,8 @@ func main() {
 	http.HandleFunc("/", handlers.HomeHandler)
 	http.HandleFunc("/health", handlers.HealthHandler)
 	http.HandleFunc("/providers", handlers.ProvidersHandler)
+	http.HandleFunc("/providers-management", handlers.ProvidersManagementHandler)
+	http.HandleFunc("/channels", handlers.ChannelsHandler)
 	http.HandleFunc("/users", handlers.UsersHandler)
 
 	// Server configuration
