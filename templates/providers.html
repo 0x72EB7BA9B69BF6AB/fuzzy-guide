@@ -176,11 +176,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Providers - Bouquet Management</h1>
+        <h1>Administration Panel - Bouquet Management</h1>
         
         <div class="navigation">
             <a href="/">Home</a>
-            <a href="/providers">Providers</a>
+            <a href="/providers">Administration</a>
             <a href="/users">Users</a>
         </div>
 
@@ -206,12 +206,16 @@
                     <textarea id="description" name="description"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="price">Price ($):</label>
-                    <input type="number" id="price" name="price" step="0.01" min="0" required>
+                    <label for="channel_name">Channel Name:</label>
+                    <input type="text" id="channel_name" name="channel_name" placeholder="BBC One">
                 </div>
                 <div class="form-group">
-                    <label for="channels">Channels (comma-separated):</label>
-                    <textarea id="channels" name="channels" placeholder="BBC One, BBC Two, ITV, Channel 4"></textarea>
+                    <label for="channel_manifest">Channel Manifest URL:</label>
+                    <input type="url" id="channel_manifest" name="channel_manifest" placeholder="https://manifest.bbc.co.uk/bbc1/manifest.mpd">
+                </div>
+                <div class="form-group">
+                    <label for="channel_keykid">Channel Key:Kid:</label>
+                    <input type="text" id="channel_keykid" name="channel_keykid" placeholder="bbc1-key-001">
                 </div>
                 <button type="submit" class="btn">Create Bouquet</button>
             </form>
@@ -226,7 +230,6 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>Price</th>
                     <th>Channels</th>
                     <th>Created</th>
                     <th>Actions</th>
@@ -238,10 +241,12 @@
                     <td>{{.ID}}</td>
                     <td>{{.Name}}</td>
                     <td>{{.Description}}</td>
-                    <td>${{printf "%.2f" .Price}}</td>
                     <td class="channels-list">
                         {{range $i, $channel := .Channels}}
-                            {{if $i}}, {{end}}{{$channel}}
+                            {{if $i}}<br>{{end}}
+                            <strong>{{$channel.Name}}</strong><br>
+                            <small>Manifest: {{$channel.Manifest}}</small><br>
+                            <small>Key:Kid: {{$channel.KeyKid}}</small>
                         {{end}}
                     </td>
                     <td>{{.CreatedAt.Format "2006-01-02 15:04"}}</td>
@@ -251,7 +256,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="6">
                         <div id="edit-form-{{.ID}}" class="edit-form">
                             <h3>Edit Bouquet: {{.Name}}</h3>
                             <form method="post">
@@ -265,14 +270,36 @@
                                     <label for="edit-description-{{.ID}}">Description:</label>
                                     <textarea id="edit-description-{{.ID}}" name="description">{{.Description}}</textarea>
                                 </div>
+                                {{if .Channels}}
+                                    {{range $channel := .Channels}}
+                                    <div class="form-group">
+                                        <label for="edit-channel-name-{{$.ID}}">Channel Name:</label>
+                                        <input type="text" id="edit-channel-name-{{$.ID}}" name="channel_name" value="{{$channel.Name}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-channel-manifest-{{$.ID}}">Channel Manifest URL:</label>
+                                        <input type="url" id="edit-channel-manifest-{{$.ID}}" name="channel_manifest" value="{{$channel.Manifest}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-channel-keykid-{{$.ID}}">Channel Key:Kid:</label>
+                                        <input type="text" id="edit-channel-keykid-{{$.ID}}" name="channel_keykid" value="{{$channel.KeyKid}}">
+                                    </div>
+                                    {{break}}
+                                    {{end}}
+                                {{else}}
                                 <div class="form-group">
-                                    <label for="edit-price-{{.ID}}">Price ($):</label>
-                                    <input type="number" id="edit-price-{{.ID}}" name="price" step="0.01" min="0" value="{{.Price}}" required>
+                                    <label for="edit-channel-name-{{.ID}}">Channel Name:</label>
+                                    <input type="text" id="edit-channel-name-{{.ID}}" name="channel_name">
                                 </div>
                                 <div class="form-group">
-                                    <label for="edit-channels-{{.ID}}">Channels (comma-separated):</label>
-                                    <textarea id="edit-channels-{{.ID}}" name="channels">{{range $i, $channel := .Channels}}{{if $i}}, {{end}}{{$channel}}{{end}}</textarea>
+                                    <label for="edit-channel-manifest-{{.ID}}">Channel Manifest URL:</label>
+                                    <input type="url" id="edit-channel-manifest-{{.ID}}" name="channel_manifest">
                                 </div>
+                                <div class="form-group">
+                                    <label for="edit-channel-keykid-{{.ID}}">Channel Key:Kid:</label>
+                                    <input type="text" id="edit-channel-keykid-{{.ID}}" name="channel_keykid">
+                                </div>
+                                {{end}}
                                 <button type="submit" class="btn">Update Bouquet</button>
                                 <button type="button" class="btn btn-warning" onclick="hideEditForm({{.ID}})">Cancel</button>
                             </form>

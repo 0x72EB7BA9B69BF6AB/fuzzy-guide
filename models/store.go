@@ -37,17 +37,26 @@ func (s *Store) initSampleData() {
 		ID:          1,
 		Name:        "Basic Package",
 		Description: "Essential channels for everyday viewing",
-		Price:       29.99,
-		Channels:    []string{"BBC One", "BBC Two", "ITV", "Channel 4"},
+		Channels: []Channel{
+			{Name: "BBC One", Manifest: "https://manifest.bbc.co.uk/bbc1/manifest.mpd", KeyKid: "bbc1-key-001"},
+			{Name: "BBC Two", Manifest: "https://manifest.bbc.co.uk/bbc2/manifest.mpd", KeyKid: "bbc2-key-001"},
+			{Name: "ITV", Manifest: "https://manifest.itv.com/itv1/manifest.mpd", KeyKid: "itv1-key-001"},
+			{Name: "Channel 4", Manifest: "https://manifest.channel4.com/c4/manifest.mpd", KeyKid: "c4-key-001"},
+		},
 		CreatedAt:   now,
 		UpdatedAt:   now,
 	}
 	s.bouquets[2] = Bouquet{
 		ID:          2,
-		Name:        "Premium Package",
+		Name:        "Premium Package", 
 		Description: "Complete entertainment experience with sports and movies",
-		Price:       59.99,
-		Channels:    []string{"BBC One", "BBC Two", "ITV", "Channel 4", "Sky Sports", "Sky Movies", "Discovery"},
+		Channels: []Channel{
+			{Name: "BBC One", Manifest: "https://manifest.bbc.co.uk/bbc1/manifest.mpd", KeyKid: "bbc1-key-001"},
+			{Name: "BBC Two", Manifest: "https://manifest.bbc.co.uk/bbc2/manifest.mpd", KeyKid: "bbc2-key-001"},
+			{Name: "Sky Sports", Manifest: "https://manifest.sky.com/sports/manifest.mpd", KeyKid: "sky-sports-key-001"},
+			{Name: "Sky Movies", Manifest: "https://manifest.sky.com/movies/manifest.mpd", KeyKid: "sky-movies-key-001"},
+			{Name: "Discovery", Manifest: "https://manifest.discovery.com/main/manifest.mpd", KeyKid: "discovery-key-001"},
+		},
 		CreatedAt:   now,
 		UpdatedAt:   now,
 	}

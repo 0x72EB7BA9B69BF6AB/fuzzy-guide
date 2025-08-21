@@ -14,7 +14,7 @@ import (
 // ProvidersHandler handles requests to the providers page for managing bouquets
 func ProvidersHandler(w http.ResponseWriter, r *http.Request) {
 	var data models.ProvidersPageData
-	data.Title = "Fuzzy - Providers"
+	data.Title = "Fuzzy - Administration Panel"
 
 	switch r.Method {
 	case http.MethodGet:
@@ -75,36 +75,35 @@ func handlePostProviders(w http.ResponseWriter, r *http.Request, data *models.Pr
 func handleCreateBouquet(r *http.Request, data *models.ProvidersPageData) {
 	name := strings.TrimSpace(r.FormValue("name"))
 	description := strings.TrimSpace(r.FormValue("description"))
-	priceStr := strings.TrimSpace(r.FormValue("price"))
-	channelsStr := strings.TrimSpace(r.FormValue("channels"))
-
+	
 	// Validate input
 	if name == "" {
 		data.Error = "Bouquet name is required"
 		return
 	}
 
-	price, err := strconv.ParseFloat(priceStr, 64)
-	if err != nil || price < 0 {
-		data.Error = "Invalid price"
-		return
-	}
-
-	// Parse channels (comma-separated)
-	var channels []string
-	if channelsStr != "" {
-		for _, channel := range strings.Split(channelsStr, ",") {
-			if trimmed := strings.TrimSpace(channel); trimmed != "" {
-				channels = append(channels, trimmed)
-			}
-		}
+	// Parse channels from form data - for now, we'll use a simple format
+	// Later we can enhance this with a more sophisticated channel input method
+	var channels []models.Channel
+	
+	// Get channel data from form - we'll implement multiple channels later
+	// For now, let's handle a single channel input
+	channelName := strings.TrimSpace(r.FormValue("channel_name"))
+	channelManifest := strings.TrimSpace(r.FormValue("channel_manifest"))
+	channelKeyKid := strings.TrimSpace(r.FormValue("channel_keykid"))
+	
+	if channelName != "" && channelManifest != "" && channelKeyKid != "" {
+		channels = append(channels, models.Channel{
+			Name:     channelName,
+			Manifest: channelManifest,
+			KeyKid:   channelKeyKid,
+		})
 	}
 
 	// Create bouquet
 	bouquet := models.Bouquet{
 		Name:        name,
 		Description: description,
-		Price:       price,
 		Channels:    channels,
 	}
 
@@ -129,8 +128,6 @@ func handleUpdateBouquet(r *http.Request, data *models.ProvidersPageData) {
 
 	name := strings.TrimSpace(r.FormValue("name"))
 	description := strings.TrimSpace(r.FormValue("description"))
-	priceStr := strings.TrimSpace(r.FormValue("price"))
-	channelsStr := strings.TrimSpace(r.FormValue("channels"))
 
 	// Validate input
 	if name == "" {
@@ -138,27 +135,26 @@ func handleUpdateBouquet(r *http.Request, data *models.ProvidersPageData) {
 		return
 	}
 
-	price, err := strconv.ParseFloat(priceStr, 64)
-	if err != nil || price < 0 {
-		data.Error = "Invalid price"
-		return
-	}
-
-	// Parse channels (comma-separated)
-	var channels []string
-	if channelsStr != "" {
-		for _, channel := range strings.Split(channelsStr, ",") {
-			if trimmed := strings.TrimSpace(channel); trimmed != "" {
-				channels = append(channels, trimmed)
-			}
-		}
+	// Parse channels from form data - for now, we'll use a simple format
+	var channels []models.Channel
+	
+	// Get channel data from form - we'll implement multiple channels later
+	channelName := strings.TrimSpace(r.FormValue("channel_name"))
+	channelManifest := strings.TrimSpace(r.FormValue("channel_manifest"))
+	channelKeyKid := strings.TrimSpace(r.FormValue("channel_keykid"))
+	
+	if channelName != "" && channelManifest != "" && channelKeyKid != "" {
+		channels = append(channels, models.Channel{
+			Name:     channelName,
+			Manifest: channelManifest,
+			KeyKid:   channelKeyKid,
+		})
 	}
 
 	// Update bouquet
 	updated := existing
 	updated.Name = name
 	updated.Description = description
-	updated.Price = price
 	updated.Channels = channels
 
 	if models.GlobalStore.UpdateBouquet(updated) {
