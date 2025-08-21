@@ -245,10 +245,21 @@
                     <td>{{.Description}}</td>
                     <td class="channels-list">
                         {{range $i, $channel := .Channels}}
-                            {{if $i}}<br>{{end}}
-                            <strong>{{$channel.Name}}</strong><br>
-                            <small>Manifest: {{$channel.Manifest}}</small><br>
-                            <small>Key:Kid: {{$channel.KeyKid}}</small>
+                            {{if $i}}<hr style="margin: 10px 0; border: 1px solid #eee;">{{end}}
+                            <div style="background-color: #f8f9fa; padding: 10px; border-radius: 4px; margin-bottom: 8px;">
+                                <strong style="color: #495057;">{{$channel.Name}}</strong><br>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px; font-size: 11px;">
+                                    <div>
+                                        <strong>🎬 Video:</strong> {{$channel.VideoCodec}} | {{$channel.Resolution}} | {{$channel.VideoBitrate}}<br>
+                                        <strong>🔊 Audio:</strong> {{$channel.AudioCodec}} | {{$channel.AudioBitrate}}
+                                    </div>
+                                    <div>
+                                        <strong>Quality:</strong> {{$channel.Quality}}<br>
+                                        <strong>Key:Kid:</strong> {{$channel.KeyKid}}
+                                    </div>
+                                </div>
+                                <small style="color: #6c757d; word-break: break-all;">{{$channel.Manifest}}</small>
+                            </div>
                         {{end}}
                     </td>
                     <td>{{.CreatedAt.Format "2006-01-02 15:04"}}</td>
