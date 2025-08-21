@@ -33,11 +33,34 @@
             text-align: center;
             margin-top: 20px;
         }
+        .navigation {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .navigation a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .navigation a:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>{{.WelcomeMsg}}</h1>
+        
+        <div class="navigation">
+            <a href="/providers">Providers</a>
+            <a href="/users">Users</a>
+        </div>
+        
         <p>This is a clean, simple, and efficient Go web server. The server is designed to be lightweight and easy to understand.</p>
         <p>Features:</p>
         <ul>
@@ -45,6 +68,8 @@
             <li>Simple HTML template rendering</li>
             <li>Responsive design</li>
             <li>Efficient HTTP routing</li>
+            <li>Bouquet management for providers</li>
+            <li>User management system</li>
         </ul>
         <div class="time">Current server time: {{.CurrentTime}}</div>
     </div>
