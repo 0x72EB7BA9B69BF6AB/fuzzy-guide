@@ -65,6 +65,26 @@ go run main.go
 
 The server will start on port 8080 by default.
 
+### Quick Build
+
+Use the build script for a convenient build process:
+
+```bash
+./build.sh
+```
+
+### Manual Build Commands
+
+Standard build:
+```bash
+go build -o fuzzy main.go
+```
+
+Or simply:
+```bash
+go build
+```
+
 ### Building for Production
 
 ```bash
