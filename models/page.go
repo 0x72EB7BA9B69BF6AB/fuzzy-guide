@@ -9,12 +9,21 @@ type HomePageData struct {
 	CurrentTime string
 }
 
-// Channel represents a channel with its execution properties
+// Channel represents a channel with its execution properties and video encoding settings
 type Channel struct {
-	ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Manifest string `json:"manifest"`
-	KeyKid   string `json:"key_kid"`
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Manifest    string `json:"manifest"`
+	KeyKid      string `json:"key_kid"`
+	
+	// Video encoding properties
+	VideoCodec    string `json:"video_codec"`    // x264, x265, AV1, VP9
+	AudioCodec    string `json:"audio_codec"`    // AAC, MP3, AC3, DTS
+	Resolution    string `json:"resolution"`     // 720p, 1080p, 1440p, 2160p
+	VideoBitrate  string `json:"video_bitrate"`  // Video bitrate (e.g., "5000k", "8000k")
+	AudioBitrate  string `json:"audio_bitrate"`  // Audio bitrate (e.g., "128k", "256k")
+	Quality       string `json:"quality"`        // Low, Medium, High, Ultra
+	
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
