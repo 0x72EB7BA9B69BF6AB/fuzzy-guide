@@ -74,6 +74,12 @@ func handleCreateChannel(r *http.Request, data *models.ChannelsPageData) {
 	name := strings.TrimSpace(r.FormValue("name"))
 	manifest := strings.TrimSpace(r.FormValue("manifest"))
 	keyKid := strings.TrimSpace(r.FormValue("key_kid"))
+	videoCodec := strings.TrimSpace(r.FormValue("video_codec"))
+	audioCodec := strings.TrimSpace(r.FormValue("audio_codec"))
+	resolution := strings.TrimSpace(r.FormValue("resolution"))
+	videoBitrate := strings.TrimSpace(r.FormValue("video_bitrate"))
+	audioBitrate := strings.TrimSpace(r.FormValue("audio_bitrate"))
+	quality := strings.TrimSpace(r.FormValue("quality"))
 	
 	// Validate input
 	if name == "" {
@@ -89,11 +95,37 @@ func handleCreateChannel(r *http.Request, data *models.ChannelsPageData) {
 		return
 	}
 
+	// Set defaults for optional fields
+	if videoCodec == "" {
+		videoCodec = "x264"
+	}
+	if audioCodec == "" {
+		audioCodec = "AAC"
+	}
+	if resolution == "" {
+		resolution = "1080p"
+	}
+	if videoBitrate == "" {
+		videoBitrate = "5000k"
+	}
+	if audioBitrate == "" {
+		audioBitrate = "128k"
+	}
+	if quality == "" {
+		quality = "Medium"
+	}
+
 	// Create channel
 	channel := models.Channel{
-		Name:     name,
-		Manifest: manifest,
-		KeyKid:   keyKid,
+		Name:         name,
+		Manifest:     manifest,
+		KeyKid:       keyKid,
+		VideoCodec:   videoCodec,
+		AudioCodec:   audioCodec,
+		Resolution:   resolution,
+		VideoBitrate: videoBitrate,
+		AudioBitrate: audioBitrate,
+		Quality:      quality,
 	}
 
 	models.GlobalStore.CreateChannel(channel)
@@ -118,6 +150,12 @@ func handleUpdateChannel(r *http.Request, data *models.ChannelsPageData) {
 	name := strings.TrimSpace(r.FormValue("name"))
 	manifest := strings.TrimSpace(r.FormValue("manifest"))
 	keyKid := strings.TrimSpace(r.FormValue("key_kid"))
+	videoCodec := strings.TrimSpace(r.FormValue("video_codec"))
+	audioCodec := strings.TrimSpace(r.FormValue("audio_codec"))
+	resolution := strings.TrimSpace(r.FormValue("resolution"))
+	videoBitrate := strings.TrimSpace(r.FormValue("video_bitrate"))
+	audioBitrate := strings.TrimSpace(r.FormValue("audio_bitrate"))
+	quality := strings.TrimSpace(r.FormValue("quality"))
 
 	// Validate input
 	if name == "" {
@@ -133,11 +171,55 @@ func handleUpdateChannel(r *http.Request, data *models.ChannelsPageData) {
 		return
 	}
 
+	// Set defaults for optional fields if empty
+	if videoCodec == "" {
+		videoCodec = existing.VideoCodec
+		if videoCodec == "" {
+			videoCodec = "x264"
+		}
+	}
+	if audioCodec == "" {
+		audioCodec = existing.AudioCodec
+		if audioCodec == "" {
+			audioCodec = "AAC"
+		}
+	}
+	if resolution == "" {
+		resolution = existing.Resolution
+		if resolution == "" {
+			resolution = "1080p"
+		}
+	}
+	if videoBitrate == "" {
+		videoBitrate = existing.VideoBitrate
+		if videoBitrate == "" {
+			videoBitrate = "5000k"
+		}
+	}
+	if audioBitrate == "" {
+		audioBitrate = existing.AudioBitrate
+		if audioBitrate == "" {
+			audioBitrate = "128k"
+		}
+	}
+	if quality == "" {
+		quality = existing.Quality
+		if quality == "" {
+			quality = "Medium"
+		}
+	}
+
 	// Update channel
 	updated := existing
 	updated.Name = name
 	updated.Manifest = manifest
 	updated.KeyKid = keyKid
+	updated.VideoCodec = videoCodec
+	updated.AudioCodec = audioCodec
+	updated.Resolution = resolution
+	updated.VideoBitrate = videoBitrate
+	updated.AudioBitrate = audioBitrate
+	updated.Quality = quality
 
 	if models.GlobalStore.UpdateChannel(updated) {
 		data.Message = "Channel updated successfully"

@@ -91,12 +91,44 @@ func handleCreateBouquet(r *http.Request, data *models.ProvidersPageData) {
 	channelName := strings.TrimSpace(r.FormValue("channel_name"))
 	channelManifest := strings.TrimSpace(r.FormValue("channel_manifest"))
 	channelKeyKid := strings.TrimSpace(r.FormValue("channel_keykid"))
+	videoCodec := strings.TrimSpace(r.FormValue("channel_video_codec"))
+	audioCodec := strings.TrimSpace(r.FormValue("channel_audio_codec"))
+	resolution := strings.TrimSpace(r.FormValue("channel_resolution"))
+	videoBitrate := strings.TrimSpace(r.FormValue("channel_video_bitrate"))
+	audioBitrate := strings.TrimSpace(r.FormValue("channel_audio_bitrate"))
+	quality := strings.TrimSpace(r.FormValue("channel_quality"))
 	
 	if channelName != "" && channelManifest != "" && channelKeyKid != "" {
+		// Set defaults for video encoding fields
+		if videoCodec == "" {
+			videoCodec = "x265"
+		}
+		if audioCodec == "" {
+			audioCodec = "AAC"
+		}
+		if resolution == "" {
+			resolution = "1080p"
+		}
+		if videoBitrate == "" {
+			videoBitrate = "5000k"
+		}
+		if audioBitrate == "" {
+			audioBitrate = "128k"
+		}
+		if quality == "" {
+			quality = "High"
+		}
+		
 		channels = append(channels, models.Channel{
-			Name:     channelName,
-			Manifest: channelManifest,
-			KeyKid:   channelKeyKid,
+			Name:         channelName,
+			Manifest:     channelManifest,
+			KeyKid:       channelKeyKid,
+			VideoCodec:   videoCodec,
+			AudioCodec:   audioCodec,
+			Resolution:   resolution,
+			VideoBitrate: videoBitrate,
+			AudioBitrate: audioBitrate,
+			Quality:      quality,
 		})
 	}
 
@@ -142,12 +174,44 @@ func handleUpdateBouquet(r *http.Request, data *models.ProvidersPageData) {
 	channelName := strings.TrimSpace(r.FormValue("channel_name"))
 	channelManifest := strings.TrimSpace(r.FormValue("channel_manifest"))
 	channelKeyKid := strings.TrimSpace(r.FormValue("channel_keykid"))
+	videoCodec := strings.TrimSpace(r.FormValue("channel_video_codec"))
+	audioCodec := strings.TrimSpace(r.FormValue("channel_audio_codec"))
+	resolution := strings.TrimSpace(r.FormValue("channel_resolution"))
+	videoBitrate := strings.TrimSpace(r.FormValue("channel_video_bitrate"))
+	audioBitrate := strings.TrimSpace(r.FormValue("channel_audio_bitrate"))
+	quality := strings.TrimSpace(r.FormValue("channel_quality"))
 	
 	if channelName != "" && channelManifest != "" && channelKeyKid != "" {
+		// Set defaults for video encoding fields
+		if videoCodec == "" {
+			videoCodec = "x265"
+		}
+		if audioCodec == "" {
+			audioCodec = "AAC"
+		}
+		if resolution == "" {
+			resolution = "1080p"
+		}
+		if videoBitrate == "" {
+			videoBitrate = "5000k"
+		}
+		if audioBitrate == "" {
+			audioBitrate = "128k"
+		}
+		if quality == "" {
+			quality = "High"
+		}
+		
 		channels = append(channels, models.Channel{
-			Name:     channelName,
-			Manifest: channelManifest,
-			KeyKid:   channelKeyKid,
+			Name:         channelName,
+			Manifest:     channelManifest,
+			KeyKid:       channelKeyKid,
+			VideoCodec:   videoCodec,
+			AudioCodec:   audioCodec,
+			Resolution:   resolution,
+			VideoBitrate: videoBitrate,
+			AudioBitrate: audioBitrate,
+			Quality:      quality,
 		})
 	}
 
