@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"time"
+	"golang.org/x/crypto/bcrypt"
+)
 
 // HomePageData represents the data structure for the home page template
 type HomePageData struct {
@@ -60,12 +63,29 @@ type User struct {
 	ID        int       `json:"id"`
 	Username  string    `json:"username"`
 	Email     string    `json:"email"`
+	Password  string    `json:"-"` // Don't include in JSON output
 	FirstName string    `json:"first_name"`
 	LastName  string    `json:"last_name"`
 	Role      string    `json:"role"`
 	Active    bool      `json:"active"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// SetPassword hashes and sets the user's password
+func (u *User) SetPassword(password string) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	u.Password = string(hashedPassword)
+	return nil
+}
+
+// CheckPassword verifies if the provided password matches the user's password
+func (u *User) CheckPassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+	return err == nil
 }
 
 // ProvidersPageData represents the data structure for the providers page template
@@ -112,4 +132,18 @@ type ProvidersManagementPageData struct {
 	Providers []Provider
 	Message   string
 	Error     string
+}
+
+// LoginPageData represents the data structure for the login page template
+type LoginPageData struct {
+	Title   string
+	Message string
+	Error   string
+}
+
+// SetupPageData represents the data structure for the first-time setup page template
+type SetupPageData struct {
+	Title   string
+	Message string
+	Error   string
 }
