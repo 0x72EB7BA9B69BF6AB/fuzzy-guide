@@ -31,8 +31,7 @@ func NewStore() *Store {
 		nextProviderID: 1,
 	}
 	
-	// Add some sample data
-	store.initSampleData()
+	// Don't add sample data anymore - let users set up from scratch
 	return store
 }
 
@@ -350,6 +349,27 @@ func (s *Store) GetUser(id int) (User, bool) {
 	
 	user, exists := s.users[id]
 	return user, exists
+}
+
+// HasUsers returns true if any users exist in the store
+func (s *Store) HasUsers() bool {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
+	
+	return len(s.users) > 0
+}
+
+// GetUserByUsername returns a user by username
+func (s *Store) GetUserByUsername(username string) (User, bool) {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
+	
+	for _, user := range s.users {
+		if user.Username == username {
+			return user, true
+		}
+	}
+	return User{}, false
 }
 
 func (s *Store) CreateUser(user User) User {

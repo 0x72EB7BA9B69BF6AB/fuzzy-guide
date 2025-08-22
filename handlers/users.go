@@ -75,6 +75,7 @@ func handlePostUsers(w http.ResponseWriter, r *http.Request, data *models.UsersP
 func handleCreateUser(r *http.Request, data *models.UsersPageData) {
 	username := strings.TrimSpace(r.FormValue("username"))
 	email := strings.TrimSpace(r.FormValue("email"))
+	password := r.FormValue("password")
 	firstName := strings.TrimSpace(r.FormValue("first_name"))
 	lastName := strings.TrimSpace(r.FormValue("last_name"))
 	role := strings.TrimSpace(r.FormValue("role"))
@@ -89,8 +90,18 @@ func handleCreateUser(r *http.Request, data *models.UsersPageData) {
 		data.Error = "Email is required"
 		return
 	}
+	if password == "" {
+		data.Error = "Password is required"
+		return
+	}
 	if role == "" {
 		role = "User" // Default role
+	}
+
+	// Check if username already exists
+	if _, exists := models.GlobalStore.GetUserByUsername(username); exists {
+		data.Error = "Username already exists"
+		return
 	}
 
 	active := activeStr == "on" || activeStr == "true"
@@ -103,6 +114,12 @@ func handleCreateUser(r *http.Request, data *models.UsersPageData) {
 		LastName:  lastName,
 		Role:      role,
 		Active:    active,
+	}
+
+	// Set password
+	if err := user.SetPassword(password); err != nil {
+		data.Error = "Error encrypting password"
+		return
 	}
 
 	models.GlobalStore.CreateUser(user)

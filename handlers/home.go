@@ -18,10 +18,28 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// If no users exist, redirect to setup
+	if !models.GlobalStore.HasUsers() {
+		http.Redirect(w, r, "/setup", http.StatusSeeOther)
+		return
+	}
+
+	// Check if user is authenticated
+	user, authenticated := GetCurrentUser(r)
+	if !authenticated {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
 	// Prepare data for the home page template
+	welcomeMsg := "Welcome to Fuzzy!"
+	if user.FirstName != "" {
+		welcomeMsg = "Welcome back, " + user.FirstName + "!"
+	}
+
 	data := models.HomePageData{
 		Title:       "Fuzzy - Home",
-		WelcomeMsg:  "Welcome to Fuzzy!",
+		WelcomeMsg:  welcomeMsg,
 		CurrentTime: time.Now().Format("2006-01-02 15:04:05"),
 	}
 
