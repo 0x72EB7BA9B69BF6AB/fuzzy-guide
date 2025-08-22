@@ -24,6 +24,10 @@ type Channel struct {
 	AudioBitrate  string `json:"audio_bitrate"`  // Audio bitrate (e.g., "128k", "256k")
 	Quality       string `json:"quality"`        // Low, Medium, High, Ultra
 	
+	// Channel state for remuxer control
+	Running   bool `json:"running"`   // Whether the channel is currently running
+	RemuxPort int  `json:"remux_port"` // Port for internal remuxer (0 if not running)
+	
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -45,6 +49,7 @@ type Bouquet struct {
 	ID          int       `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
+	ProviderID  int       `json:"provider_id"`  // Links bouquet to a provider
 	Channels    []Channel `json:"channels"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
@@ -69,6 +74,20 @@ type ProvidersPageData struct {
 	Bouquets []Bouquet
 	Message  string
 	Error    string
+}
+
+// ProvidersWithBouquetsPageData represents the data structure for the new providers page with integrated bouquets
+type ProvidersWithBouquetsPageData struct {
+	Title     string
+	Providers []ProviderWithBouquets
+	Message   string
+	Error     string
+}
+
+// ProviderWithBouquets combines provider info with its bouquets
+type ProviderWithBouquets struct {
+	Provider
+	Bouquets []Bouquet `json:"bouquets"`
 }
 
 // UsersPageData represents the data structure for the users page template

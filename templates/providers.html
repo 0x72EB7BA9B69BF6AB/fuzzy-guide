@@ -12,7 +12,7 @@
             background-color: #f5f5f5;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background-color: white;
             padding: 30px;
@@ -24,9 +24,20 @@
             text-align: center;
             margin-bottom: 30px;
         }
+        h2 {
+            color: #444;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
         .navigation {
             text-align: center;
-            margin-bottom: 30px;
+            margin: 30px 0;
         }
         .navigation a {
             display: inline-block;
@@ -41,26 +52,123 @@
         .navigation a:hover {
             background-color: #0056b3;
         }
-        .message {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
+        .provider-section {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
         }
-        .message.success {
+        .provider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .provider-info {
+            flex-grow: 1;
+        }
+        .provider-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .bouquet-item {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: white;
+        }
+        .bouquet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .channel-card {
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 12px;
+            background-color: #f8f9fa;
+        }
+        .channel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .channel-name {
+            font-weight: bold;
+            color: #333;
+        }
+        .channel-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-running {
             background-color: #d4edda;
-            border: 1px solid #c3e6cb;
             color: #155724;
         }
-        .message.error {
+        .status-stopped {
             background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
             color: #721c24;
+        }
+        .channel-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-start {
+            background-color: #28a745;
+        }
+        .btn-stop {
+            background-color: #dc3545;
+        }
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 12px;
         }
         .form-section {
             background-color: #f8f9fa;
             padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
+            border-radius: 6px;
+            margin: 20px 0;
         }
         .form-group {
             margin-bottom: 15px;
@@ -76,112 +184,89 @@
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 14px;
             box-sizing: border-box;
         }
         .form-group textarea {
-            height: 80px;
+            height: 60px;
             resize: vertical;
         }
-        .btn {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        .message {
+            padding: 15px;
+            margin: 20px 0;
             border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
         }
-        .btn:hover {
-            background-color: #218838;
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
-        .btn-danger {
-            background-color: #dc3545;
-        }
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-        .btn-warning {
-            background-color: #ffc107;
-            color: #212529;
-        }
-        .btn-warning:hover {
-            background-color: #e0a800;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f8f9fa;
-            font-weight: bold;
-            color: #333;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-        .actions {
-            white-space: nowrap;
-        }
-        .actions a, .actions button {
-            margin-right: 5px;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 3px;
-            font-size: 12px;
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
         .edit-form {
             display: none;
-            background-color: #fff3cd;
+            background-color: #e9ecef;
             padding: 15px;
-            border: 1px solid #ffeaa7;
             border-radius: 4px;
-            margin-top: 10px;
+            margin: 10px 0;
         }
-        .channels-list {
+        .status-active {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .status-inactive {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .channel-info {
             font-size: 12px;
             color: #666;
+            margin: 5px 0;
+        }
+        .expandable {
+            cursor: pointer;
+        }
+        .expandable:hover {
+            background-color: #e9ecef;
         }
     </style>
     <script>
-        function showEditForm(id) {
-            // Hide all edit forms
-            const editForms = document.querySelectorAll('.edit-form');
-            editForms.forEach(form => form.style.display = 'none');
-            
-            // Show the specific edit form
-            const form = document.getElementById('edit-form-' + id);
-            if (form) {
-                form.style.display = 'block';
-            }
+        function showEditForm(type, id) {
+            document.getElementById('edit-' + type + '-form-' + id).style.display = 'block';
         }
-        
-        function hideEditForm(id) {
-            const form = document.getElementById('edit-form-' + id);
-            if (form) {
-                form.style.display = 'none';
-            }
+        function hideEditForm(type, id) {
+            document.getElementById('edit-' + type + '-form-' + id).style.display = 'none';
         }
-        
-        function confirmDelete(id, name) {
-            return confirm('Are you sure you want to delete the bouquet "' + name + '"?');
+        function confirmDelete(type, id, name) {
+            return confirm('Are you sure you want to delete the ' + type + ' "' + name + '"?');
+        }
+        function toggleBouquets(providerId) {
+            var bouquets = document.getElementById('bouquets-' + providerId);
+            if (bouquets.style.display === 'none') {
+                bouquets.style.display = 'block';
+            } else {
+                bouquets.style.display = 'none';
+            }
         }
     </script>
 </head>
 <body>
     <div class="container">
-        <h1>Administration Panel - Bouquet Management</h1>
+        <h1>Providers & Bouquets Management</h1>
         
         <div class="navigation">
             <a href="/">Home</a>
-            <a href="/providers">Bouquets</a>
-            <a href="/providers-management">Providers</a>
+            <a href="/providers">Providers</a>
             <a href="/channels">Channels</a>
             <a href="/users">Users</a>
         </div>
@@ -194,136 +279,225 @@
         <div class="message error">{{.Error}}</div>
         {{end}}
 
-        <!-- Create New Bouquet Form -->
+        <!-- Create New Provider Form -->
         <div class="form-section">
-            <h2>Create New Bouquet</h2>
+            <h2>Create New Provider</h2>
             <form method="post">
-                <input type="hidden" name="action" value="create">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
+                <input type="hidden" name="action" value="create-provider">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label for="name">Provider Name:</label>
+                        <input type="text" id="name" name="name" required placeholder="BBC">
+                    </div>
+                    <div class="form-group">
+                        <label for="url">Provider URL:</label>
+                        <input type="url" id="url" name="url" required placeholder="https://www.bbc.co.uk">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="description">Description:</label>
-                    <textarea id="description" name="description"></textarea>
+                    <textarea id="description" name="description" placeholder="British Broadcasting Corporation"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="channel_name">Channel Name:</label>
-                    <input type="text" id="channel_name" name="channel_name" placeholder="BBC One">
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end;">
+                    <div class="form-group">
+                        <label for="api_key">API Key:</label>
+                        <input type="text" id="api_key" name="api_key" placeholder="api-key-123">
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="active" name="active" checked>
+                            <label for="active">Active</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="channel_manifest">Channel Manifest URL:</label>
-                    <input type="url" id="channel_manifest" name="channel_manifest" placeholder="https://manifest.bbc.co.uk/bbc1/manifest.mpd">
-                </div>
-                <div class="form-group">
-                    <label for="channel_keykid">Channel Key:Kid:</label>
-                    <input type="text" id="channel_keykid" name="channel_keykid" placeholder="bbc1-key-001">
-                </div>
-                <button type="submit" class="btn">Create Bouquet</button>
+                <button type="submit" class="btn">Create Provider</button>
             </form>
         </div>
 
-        <!-- Bouquets List -->
-        <h2>Existing Bouquets</h2>
-        {{if .Bouquets}}
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Channels</th>
-                    <th>Created</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{range .Bouquets}}
-                <tr>
-                    <td>{{.ID}}</td>
-                    <td>{{.Name}}</td>
-                    <td>{{.Description}}</td>
-                    <td class="channels-list">
-                        {{range $i, $channel := .Channels}}
-                            {{if $i}}<hr style="margin: 10px 0; border: 1px solid #eee;">{{end}}
-                            <div style="background-color: #f8f9fa; padding: 10px; border-radius: 4px; margin-bottom: 8px;">
-                                <strong style="color: #495057;">{{$channel.Name}}</strong><br>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px; font-size: 11px;">
-                                    <div>
-                                        <strong>🎬 Video:</strong> {{$channel.VideoCodec}} | {{$channel.Resolution}} | {{$channel.VideoBitrate}}<br>
-                                        <strong>🔊 Audio:</strong> {{$channel.AudioCodec}} | {{$channel.AudioBitrate}}
-                                    </div>
-                                    <div>
-                                        <strong>Quality:</strong> {{$channel.Quality}}<br>
-                                        <strong>Key:Kid:</strong> {{$channel.KeyKid}}
-                                    </div>
-                                </div>
-                                <small style="color: #6c757d; word-break: break-all;">{{$channel.Manifest}}</small>
-                            </div>
-                        {{end}}
-                    </td>
-                    <td>{{.CreatedAt.Format "2006-01-02 15:04"}}</td>
-                    <td class="actions">
-                        <button type="button" class="btn btn-warning" onclick="showEditForm({{.ID}})">Edit</button>
-                        <a href="?delete={{.ID}}" class="btn btn-danger" onclick="return confirmDelete({{.ID}}, '{{.Name}}')">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <div id="edit-form-{{.ID}}" class="edit-form">
-                            <h3>Edit Bouquet: {{.Name}}</h3>
-                            <form method="post">
-                                <input type="hidden" name="action" value="update">
-                                <input type="hidden" name="id" value="{{.ID}}">
-                                <div class="form-group">
-                                    <label for="edit-name-{{.ID}}">Name:</label>
-                                    <input type="text" id="edit-name-{{.ID}}" name="name" value="{{.Name}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit-description-{{.ID}}">Description:</label>
-                                    <textarea id="edit-description-{{.ID}}" name="description">{{.Description}}</textarea>
-                                </div>
-                                {{if .Channels}}
-                                    {{range $channel := .Channels}}
-                                    <div class="form-group">
-                                        <label for="edit-channel-name-{{$.ID}}">Channel Name:</label>
-                                        <input type="text" id="edit-channel-name-{{$.ID}}" name="channel_name" value="{{$channel.Name}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit-channel-manifest-{{$.ID}}">Channel Manifest URL:</label>
-                                        <input type="url" id="edit-channel-manifest-{{$.ID}}" name="channel_manifest" value="{{$channel.Manifest}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit-channel-keykid-{{$.ID}}">Channel Key:Kid:</label>
-                                        <input type="text" id="edit-channel-keykid-{{$.ID}}" name="channel_keykid" value="{{$channel.KeyKid}}">
-                                    </div>
-                                    {{break}}
-                                    {{end}}
-                                {{else}}
-                                <div class="form-group">
-                                    <label for="edit-channel-name-{{.ID}}">Channel Name:</label>
-                                    <input type="text" id="edit-channel-name-{{.ID}}" name="channel_name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit-channel-manifest-{{.ID}}">Channel Manifest URL:</label>
-                                    <input type="url" id="edit-channel-manifest-{{.ID}}" name="channel_manifest">
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit-channel-keykid-{{.ID}}">Channel Key:Kid:</label>
-                                    <input type="text" id="edit-channel-keykid-{{.ID}}" name="channel_keykid">
-                                </div>
-                                {{end}}
-                                <button type="submit" class="btn">Update Bouquet</button>
-                                <button type="button" class="btn btn-warning" onclick="hideEditForm({{.ID}})">Cancel</button>
-                            </form>
+        <!-- Providers List -->
+        <h2>Existing Providers & Their Bouquets</h2>
+        {{if .Providers}}
+        {{range .Providers}}
+        <div class="provider-section">
+            <div class="provider-header">
+                <div class="provider-info">
+                    <h3>{{.Name}} - {{.Description}}</h3>
+                    <div style="display: flex; gap: 20px; font-size: 14px; color: #666;">
+                        <span><strong>URL:</strong> {{.URL}}</span>
+                        <span><strong>API Key:</strong> {{.APIKey}}</span>
+                        <span><strong>Status:</strong> 
+                            {{if .Active}}
+                                <span class="status-active">Active</span>
+                            {{else}}
+                                <span class="status-inactive">Inactive</span>
+                            {{end}}
+                        </span>
+                        <span><strong>Created:</strong> {{.CreatedAt.Format "2006-01-02 15:04"}}</span>
+                    </div>
+                </div>
+                <div class="provider-actions">
+                    <button type="button" class="btn btn-warning" onclick="showEditForm('provider', {{.ID}})">Edit Provider</button>
+                    <a href="?delete-provider={{.ID}}" class="btn btn-danger" onclick="return confirmDelete('provider', {{.ID}}, '{{.Name}}')">Delete</a>
+                    <button type="button" class="btn" onclick="toggleBouquets({{.ID}})">Toggle Bouquets</button>
+                </div>
+            </div>
+
+            <!-- Provider Edit Form -->
+            <div id="edit-provider-form-{{.ID}}" class="edit-form">
+                <h4>Edit Provider: {{.Name}}</h4>
+                <form method="post">
+                    <input type="hidden" name="action" value="update-provider">
+                    <input type="hidden" name="id" value="{{.ID}}">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label for="edit-provider-name-{{.ID}}">Provider Name:</label>
+                            <input type="text" id="edit-provider-name-{{.ID}}" name="name" value="{{.Name}}" required>
                         </div>
-                    </td>
-                </tr>
+                        <div class="form-group">
+                            <label for="edit-provider-url-{{.ID}}">Provider URL:</label>
+                            <input type="url" id="edit-provider-url-{{.ID}}" name="url" value="{{.URL}}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-provider-description-{{.ID}}">Description:</label>
+                        <textarea id="edit-provider-description-{{.ID}}" name="description">{{.Description}}</textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end;">
+                        <div class="form-group">
+                            <label for="edit-provider-api-key-{{.ID}}">API Key:</label>
+                            <input type="text" id="edit-provider-api-key-{{.ID}}" name="api_key" value="{{.APIKey}}">
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="edit-provider-active-{{.ID}}" name="active" {{if .Active}}checked{{end}}>
+                                <label for="edit-provider-active-{{.ID}}">Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Update Provider</button>
+                    <button type="button" class="btn btn-warning" onclick="hideEditForm('provider', {{.ID}})">Cancel</button>
+                </form>
+            </div>
+
+            <!-- Bouquets Section -->
+            <div id="bouquets-{{.ID}}" style="display: block;">
+                <h4>Bouquets ({{len .Bouquets}})</h4>
+                
+                <!-- Create New Bouquet Form for this Provider -->
+                <div class="form-section" style="margin: 15px 0;">
+                    <h5>Create New Bouquet for {{.Name}}</h5>
+                    <form method="post">
+                        <input type="hidden" name="action" value="create-bouquet">
+                        <input type="hidden" name="provider_id" value="{{.ID}}">
+                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 15px;">
+                            <div class="form-group">
+                                <label for="bouquet-name-{{.ID}}">Bouquet Name:</label>
+                                <input type="text" id="bouquet-name-{{.ID}}" name="name" required placeholder="Basic Package">
+                            </div>
+                            <div class="form-group">
+                                <label for="bouquet-description-{{.ID}}">Description:</label>
+                                <input type="text" id="bouquet-description-{{.ID}}" name="description" placeholder="Essential channels for everyday viewing">
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                            <div class="form-group">
+                                <label for="channel-name-{{.ID}}">Channel Name:</label>
+                                <input type="text" id="channel-name-{{.ID}}" name="channel_name" placeholder="BBC One">
+                            </div>
+                            <div class="form-group">
+                                <label for="channel-manifest-{{.ID}}">Manifest URL:</label>
+                                <input type="url" id="channel-manifest-{{.ID}}" name="channel_manifest" placeholder="https://manifest.bbc.co.uk/bbc1/manifest.mpd">
+                            </div>
+                            <div class="form-group">
+                                <label for="channel-keykid-{{.ID}}">Key:Kid:</label>
+                                <input type="text" id="channel-keykid-{{.ID}}" name="channel_keykid" placeholder="bbc1-key-001">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">Create Bouquet</button>
+                    </form>
+                </div>
+
+                {{if .Bouquets}}
+                {{range .Bouquets}}
+                <div class="bouquet-item">
+                    <div class="bouquet-header">
+                        <div>
+                            <h5>{{.Name}} - {{.Description}}</h5>
+                            <small>Created: {{.CreatedAt.Format "2006-01-02 15:04"}} | {{len .Channels}} channels</small>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" class="btn btn-warning btn-small" onclick="showEditForm('bouquet', {{.ID}})">Edit</button>
+                            <a href="?delete-bouquet={{.ID}}" class="btn btn-danger btn-small" onclick="return confirmDelete('bouquet', {{.ID}}, '{{.Name}}')">Delete</a>
+                        </div>
+                    </div>
+
+                    <!-- Bouquet Edit Form -->
+                    <div id="edit-bouquet-form-{{.ID}}" class="edit-form">
+                        <h5>Edit Bouquet: {{.Name}}</h5>
+                        <form method="post">
+                            <input type="hidden" name="action" value="update-bouquet">
+                            <input type="hidden" name="id" value="{{.ID}}">
+                            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label for="edit-bouquet-name-{{.ID}}">Bouquet Name:</label>
+                                    <input type="text" id="edit-bouquet-name-{{.ID}}" name="name" value="{{.Name}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-bouquet-description-{{.ID}}">Description:</label>
+                                    <input type="text" id="edit-bouquet-description-{{.ID}}" name="description" value="{{.Description}}">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn">Update Bouquet</button>
+                            <button type="button" class="btn btn-warning" onclick="hideEditForm('bouquet', {{.ID}})">Cancel</button>
+                        </form>
+                    </div>
+
+                    <!-- Channels Grid -->
+                    {{if .Channels}}
+                    <div class="channels-grid">
+                        {{range .Channels}}
+                        <div class="channel-card">
+                            <div class="channel-header">
+                                <div class="channel-name">{{.Name}}</div>
+                                <div class="channel-status {{if .Running}}status-running{{else}}status-stopped{{end}}">
+                                    {{if .Running}}Running (Port: {{.RemuxPort}}){{else}}Stopped{{end}}
+                                </div>
+                            </div>
+                            <div class="channel-info">
+                                <div><strong>📺 Video:</strong> {{.VideoCodec}} | {{.Resolution}} | {{.VideoBitrate}}</div>
+                                <div><strong>🔊 Audio:</strong> {{.AudioCodec}} | {{.AudioBitrate}}</div>
+                                <div><strong>Quality:</strong> {{.Quality}} | <strong>Key:Kid:</strong> {{.KeyKid}}</div>
+                                <div style="word-break: break-all; font-size: 11px;"><strong>Manifest:</strong> {{.Manifest}}</div>
+                            </div>
+                            <div class="channel-controls">
+                                {{if .Running}}
+                                <form method="post" action="/channel/stop" style="display: inline;">
+                                    <input type="hidden" name="channel_id" value="{{.ID}}">
+                                    <button type="submit" class="btn btn-stop btn-small">⏹ Stop</button>
+                                </form>
+                                {{else}}
+                                <form method="post" action="/channel/start" style="display: inline;">
+                                    <input type="hidden" name="channel_id" value="{{.ID}}">
+                                    <button type="submit" class="btn btn-start btn-small">▶ Start</button>
+                                </form>
+                                {{end}}
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                    {{else}}
+                    <p style="color: #666; font-style: italic;">No channels configured for this bouquet.</p>
+                    {{end}}
+                </div>
                 {{end}}
-            </tbody>
-        </table>
+                {{else}}
+                <p style="color: #666; font-style: italic;">No bouquets configured for this provider. Create one above.</p>
+                {{end}}
+            </div>
+        </div>
+        {{end}}
         {{else}}
-        <p>No bouquets found. Create your first bouquet using the form above.</p>
+        <p>No providers found. Create your first provider using the form above.</p>
         {{end}}
     </div>
 </body>

@@ -71,7 +71,7 @@
             font-weight: bold;
             color: #333;
         }
-        .form-group input, .form-group select {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
@@ -79,9 +79,9 @@
             font-size: 14px;
             box-sizing: border-box;
         }
-        .form-group input[type="checkbox"] {
-            width: auto;
-            margin-right: 8px;
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
         }
         .btn {
             background-color: #28a745;
@@ -144,20 +144,9 @@
             border-radius: 4px;
             margin-top: 10px;
         }
-        .status-active {
-            color: #28a745;
-            font-weight: bold;
-        }
-        .status-inactive {
-            color: #dc3545;
-            font-weight: bold;
-        }
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-        .form-row .form-group {
-            flex: 1;
+        .channels-list {
+            font-size: 12px;
+            color: #666;
         }
     </style>
     <script>
@@ -180,18 +169,19 @@
             }
         }
         
-        function confirmDelete(id, username) {
-            return confirm('Are you sure you want to delete the user "' + username + '"?');
+        function confirmDelete(id, name) {
+            return confirm('Are you sure you want to delete the bouquet "' + name + '"?');
         }
     </script>
 </head>
 <body>
     <div class="container">
-        <h1>User Management</h1>
+        <h1>Administration Panel - Bouquet Management</h1>
         
         <div class="navigation">
             <a href="/">Home</a>
-            <a href="/providers">Providers</a>
+            <a href="/providers">Bouquets</a>
+            <a href="/providers-management">Providers</a>
             <a href="/channels">Channels</a>
             <a href="/users">Users</a>
         </div>
@@ -204,132 +194,126 @@
         <div class="message error">{{.Error}}</div>
         {{end}}
 
-        <!-- Create New User Form -->
+        <!-- Create New Bouquet Form -->
         <div class="form-section">
-            <h2>Create New User</h2>
+            <h2>Create New Bouquet</h2>
             <form method="post">
                 <input type="hidden" name="action" value="create">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="first_name">First Name:</label>
-                        <input type="text" id="first_name" name="first_name">
-                    </div>
-                    <div class="form-group">
-                        <label for="last_name">Last Name:</label>
-                        <input type="text" id="last_name" name="last_name">
-                    </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description"></textarea>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="role">Role:</label>
-                        <select id="role" name="role">
-                            <option value="User">User</option>
-                            <option value="Administrator">Administrator</option>
-                            <option value="Moderator">Moderator</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="active">
-                            <input type="checkbox" id="active" name="active" checked>
-                            Active
-                        </label>
-                    </div>
+                <div class="form-group">
+                    <label for="channel_name">Channel Name:</label>
+                    <input type="text" id="channel_name" name="channel_name" placeholder="BBC One">
                 </div>
-                <button type="submit" class="btn">Create User</button>
+                <div class="form-group">
+                    <label for="channel_manifest">Channel Manifest URL:</label>
+                    <input type="url" id="channel_manifest" name="channel_manifest" placeholder="https://manifest.bbc.co.uk/bbc1/manifest.mpd">
+                </div>
+                <div class="form-group">
+                    <label for="channel_keykid">Channel Key:Kid:</label>
+                    <input type="text" id="channel_keykid" name="channel_keykid" placeholder="bbc1-key-001">
+                </div>
+                <button type="submit" class="btn">Create Bouquet</button>
             </form>
         </div>
 
-        <!-- Users List -->
-        <h2>Existing Users</h2>
-        {{if .Users}}
+        <!-- Bouquets List -->
+        <h2>Existing Bouquets</h2>
+        {{if .Bouquets}}
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Username</th>
                     <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Channels</th>
                     <th>Created</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {{range .Users}}
+                {{range .Bouquets}}
                 <tr>
                     <td>{{.ID}}</td>
-                    <td>{{.Username}}</td>
-                    <td>{{.FirstName}} {{.LastName}}</td>
-                    <td>{{.Email}}</td>
-                    <td>{{.Role}}</td>
-                    <td>
-                        {{if .Active}}
-                            <span class="status-active">Active</span>
-                        {{else}}
-                            <span class="status-inactive">Inactive</span>
+                    <td>{{.Name}}</td>
+                    <td>{{.Description}}</td>
+                    <td class="channels-list">
+                        {{range $i, $channel := .Channels}}
+                            {{if $i}}<hr style="margin: 10px 0; border: 1px solid #eee;">{{end}}
+                            <div style="background-color: #f8f9fa; padding: 10px; border-radius: 4px; margin-bottom: 8px;">
+                                <strong style="color: #495057;">{{$channel.Name}}</strong><br>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px; font-size: 11px;">
+                                    <div>
+                                        <strong>🎬 Video:</strong> {{$channel.VideoCodec}} | {{$channel.Resolution}} | {{$channel.VideoBitrate}}<br>
+                                        <strong>🔊 Audio:</strong> {{$channel.AudioCodec}} | {{$channel.AudioBitrate}}
+                                    </div>
+                                    <div>
+                                        <strong>Quality:</strong> {{$channel.Quality}}<br>
+                                        <strong>Key:Kid:</strong> {{$channel.KeyKid}}
+                                    </div>
+                                </div>
+                                <small style="color: #6c757d; word-break: break-all;">{{$channel.Manifest}}</small>
+                            </div>
                         {{end}}
                     </td>
                     <td>{{.CreatedAt.Format "2006-01-02 15:04"}}</td>
                     <td class="actions">
                         <button type="button" class="btn btn-warning" onclick="showEditForm({{.ID}})">Edit</button>
-                        <a href="?delete={{.ID}}" class="btn btn-danger" onclick="return confirmDelete({{.ID}}, '{{.Username}}')">Delete</a>
+                        <a href="?delete={{.ID}}" class="btn btn-danger" onclick="return confirmDelete({{.ID}}, '{{.Name}}')">Delete</a>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="8">
+                    <td colspan="6">
                         <div id="edit-form-{{.ID}}" class="edit-form">
-                            <h3>Edit User: {{.Username}}</h3>
+                            <h3>Edit Bouquet: {{.Name}}</h3>
                             <form method="post">
                                 <input type="hidden" name="action" value="update">
                                 <input type="hidden" name="id" value="{{.ID}}">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="edit-username-{{.ID}}">Username:</label>
-                                        <input type="text" id="edit-username-{{.ID}}" name="username" value="{{.Username}}" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit-email-{{.ID}}">Email:</label>
-                                        <input type="email" id="edit-email-{{.ID}}" name="email" value="{{.Email}}" required>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="edit-name-{{.ID}}">Name:</label>
+                                    <input type="text" id="edit-name-{{.ID}}" name="name" value="{{.Name}}" required>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="edit-first-name-{{.ID}}">First Name:</label>
-                                        <input type="text" id="edit-first-name-{{.ID}}" name="first_name" value="{{.FirstName}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit-last-name-{{.ID}}">Last Name:</label>
-                                        <input type="text" id="edit-last-name-{{.ID}}" name="last_name" value="{{.LastName}}">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="edit-description-{{.ID}}">Description:</label>
+                                    <textarea id="edit-description-{{.ID}}" name="description">{{.Description}}</textarea>
                                 </div>
-                                <div class="form-row">
+                                {{if .Channels}}
+                                    {{range $channel := .Channels}}
                                     <div class="form-group">
-                                        <label for="edit-role-{{.ID}}">Role:</label>
-                                        <select id="edit-role-{{.ID}}" name="role">
-                                            <option value="User" {{if eq .Role "User"}}selected{{end}}>User</option>
-                                            <option value="Administrator" {{if eq .Role "Administrator"}}selected{{end}}>Administrator</option>
-                                            <option value="Moderator" {{if eq .Role "Moderator"}}selected{{end}}>Moderator</option>
-                                        </select>
+                                        <label for="edit-channel-name-{{$.ID}}">Channel Name:</label>
+                                        <input type="text" id="edit-channel-name-{{$.ID}}" name="channel_name" value="{{$channel.Name}}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="edit-active-{{.ID}}">
-                                            <input type="checkbox" id="edit-active-{{.ID}}" name="active" {{if .Active}}checked{{end}}>
-                                            Active
-                                        </label>
+                                        <label for="edit-channel-manifest-{{$.ID}}">Channel Manifest URL:</label>
+                                        <input type="url" id="edit-channel-manifest-{{$.ID}}" name="channel_manifest" value="{{$channel.Manifest}}">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="edit-channel-keykid-{{$.ID}}">Channel Key:Kid:</label>
+                                        <input type="text" id="edit-channel-keykid-{{$.ID}}" name="channel_keykid" value="{{$channel.KeyKid}}">
+                                    </div>
+                                    {{break}}
+                                    {{end}}
+                                {{else}}
+                                <div class="form-group">
+                                    <label for="edit-channel-name-{{.ID}}">Channel Name:</label>
+                                    <input type="text" id="edit-channel-name-{{.ID}}" name="channel_name">
                                 </div>
-                                <button type="submit" class="btn">Update User</button>
+                                <div class="form-group">
+                                    <label for="edit-channel-manifest-{{.ID}}">Channel Manifest URL:</label>
+                                    <input type="url" id="edit-channel-manifest-{{.ID}}" name="channel_manifest">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-channel-keykid-{{.ID}}">Channel Key:Kid:</label>
+                                    <input type="text" id="edit-channel-keykid-{{.ID}}" name="channel_keykid">
+                                </div>
+                                {{end}}
+                                <button type="submit" class="btn">Update Bouquet</button>
                                 <button type="button" class="btn btn-warning" onclick="hideEditForm({{.ID}})">Cancel</button>
                             </form>
                         </div>
@@ -339,7 +323,7 @@
             </tbody>
         </table>
         {{else}}
-        <p>No users found. Create your first user using the form above.</p>
+        <p>No bouquets found. Create your first bouquet using the form above.</p>
         {{end}}
     </div>
 </body>
