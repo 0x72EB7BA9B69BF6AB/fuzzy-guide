@@ -170,23 +170,12 @@ func handlePostSetup(w http.ResponseWriter, r *http.Request) {
 	email := strings.TrimSpace(r.FormValue("email"))
 	password := r.FormValue("password")
 	confirmPassword := r.FormValue("confirm_password")
-	firstName := strings.TrimSpace(r.FormValue("first_name"))
-	lastName := strings.TrimSpace(r.FormValue("last_name"))
 
 	// Validate input
 	if username == "" {
 		data := models.SetupPageData{
 			Title: "Fuzzy - First Time Setup",
 			Error: "Username is required",
-		}
-		renderSetupTemplate(w, &data)
-		return
-	}
-
-	if email == "" {
-		data := models.SetupPageData{
-			Title: "Fuzzy - First Time Setup",
-			Error: "Email is required",
 		}
 		renderSetupTemplate(w, &data)
 		return
@@ -214,8 +203,8 @@ func handlePostSetup(w http.ResponseWriter, r *http.Request) {
 	user := models.User{
 		Username:  username,
 		Email:     email,
-		FirstName: firstName,
-		LastName:  lastName,
+		FirstName: "",
+		LastName:  "",
 		Role:      "Administrator",
 		Active:    true,
 	}

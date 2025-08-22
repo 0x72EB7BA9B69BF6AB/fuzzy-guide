@@ -215,8 +215,8 @@
                         <input type="text" id="username" name="username" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
+                        <label for="email">Email (optional):</label>
+                        <input type="email" id="email" name="email">
                     </div>
                 </div>
                 <div class="form-row">
@@ -226,16 +226,6 @@
                     </div>
                     <div class="form-group">
                         <!-- Empty space for balanced layout -->
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="first_name">First Name:</label>
-                        <input type="text" id="first_name" name="first_name">
-                    </div>
-                    <div class="form-group">
-                        <label for="last_name">Last Name:</label>
-                        <input type="text" id="last_name" name="last_name">
                     </div>
                 </div>
                 <div class="form-row">
@@ -266,7 +256,6 @@
                 <tr>
                     <th>ID</th>
                     <th>Username</th>
-                    <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Status</th>
@@ -279,7 +268,6 @@
                 <tr>
                     <td>{{.ID}}</td>
                     <td>{{.Username}}</td>
-                    <td>{{.FirstName}} {{.LastName}}</td>
                     <td>{{.Email}}</td>
                     <td>{{.Role}}</td>
                     <td>
@@ -308,18 +296,8 @@
                                         <input type="text" id="edit-username-{{.ID}}" name="username" value="{{.Username}}" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="edit-email-{{.ID}}">Email:</label>
-                                        <input type="email" id="edit-email-{{.ID}}" name="email" value="{{.Email}}" required>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="edit-first-name-{{.ID}}">First Name:</label>
-                                        <input type="text" id="edit-first-name-{{.ID}}" name="first_name" value="{{.FirstName}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit-last-name-{{.ID}}">Last Name:</label>
-                                        <input type="text" id="edit-last-name-{{.ID}}" name="last_name" value="{{.LastName}}">
+                                        <label for="edit-email-{{.ID}}">Email (optional):</label>
+                                        <input type="email" id="edit-email-{{.ID}}" name="email" value="{{.Email}}">
                                     </div>
                                 </div>
                                 <div class="form-row">
