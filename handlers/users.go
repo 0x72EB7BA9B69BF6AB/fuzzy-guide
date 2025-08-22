@@ -76,18 +76,12 @@ func handleCreateUser(r *http.Request, data *models.UsersPageData) {
 	username := strings.TrimSpace(r.FormValue("username"))
 	email := strings.TrimSpace(r.FormValue("email"))
 	password := r.FormValue("password")
-	firstName := strings.TrimSpace(r.FormValue("first_name"))
-	lastName := strings.TrimSpace(r.FormValue("last_name"))
 	role := strings.TrimSpace(r.FormValue("role"))
 	activeStr := r.FormValue("active")
 
 	// Validate input
 	if username == "" {
 		data.Error = "Username is required"
-		return
-	}
-	if email == "" {
-		data.Error = "Email is required"
 		return
 	}
 	if password == "" {
@@ -110,8 +104,8 @@ func handleCreateUser(r *http.Request, data *models.UsersPageData) {
 	user := models.User{
 		Username:  username,
 		Email:     email,
-		FirstName: firstName,
-		LastName:  lastName,
+		FirstName: "",
+		LastName:  "",
 		Role:      role,
 		Active:    active,
 	}
@@ -143,18 +137,12 @@ func handleUpdateUser(r *http.Request, data *models.UsersPageData) {
 
 	username := strings.TrimSpace(r.FormValue("username"))
 	email := strings.TrimSpace(r.FormValue("email"))
-	firstName := strings.TrimSpace(r.FormValue("first_name"))
-	lastName := strings.TrimSpace(r.FormValue("last_name"))
 	role := strings.TrimSpace(r.FormValue("role"))
 	activeStr := r.FormValue("active")
 
 	// Validate input
 	if username == "" {
 		data.Error = "Username is required"
-		return
-	}
-	if email == "" {
-		data.Error = "Email is required"
 		return
 	}
 	if role == "" {
@@ -167,8 +155,8 @@ func handleUpdateUser(r *http.Request, data *models.UsersPageData) {
 	updated := existing
 	updated.Username = username
 	updated.Email = email
-	updated.FirstName = firstName
-	updated.LastName = lastName
+	updated.FirstName = ""
+	updated.LastName = ""
 	updated.Role = role
 	updated.Active = active
 
