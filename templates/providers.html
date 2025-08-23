@@ -284,30 +284,18 @@
             <h2>Create New Provider</h2>
             <form method="post">
                 <input type="hidden" name="action" value="create-provider">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="form-group">
-                        <label for="name">Provider Name:</label>
-                        <input type="text" id="name" name="name" required placeholder="BBC">
-                    </div>
-                    <div class="form-group">
-                        <label for="url">Provider URL:</label>
-                        <input type="url" id="url" name="url" required placeholder="https://www.bbc.co.uk">
-                    </div>
+                <div class="form-group">
+                    <label for="name">Provider Name:</label>
+                    <input type="text" id="name" name="name" required placeholder="BBC">
                 </div>
                 <div class="form-group">
                     <label for="description">Description:</label>
                     <textarea id="description" name="description" placeholder="British Broadcasting Corporation"></textarea>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end;">
-                    <div class="form-group">
-                        <label for="api_key">API Key:</label>
-                        <input type="text" id="api_key" name="api_key" placeholder="api-key-123">
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="active" name="active" checked>
-                            <label for="active">Active</label>
-                        </div>
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="active" name="active" checked>
+                        <label for="active">Active</label>
                     </div>
                 </div>
                 <button type="submit" class="btn">Create Provider</button>
@@ -323,8 +311,6 @@
                 <div class="provider-info">
                     <h3>{{.Name}} - {{.Description}}</h3>
                     <div style="display: flex; gap: 20px; font-size: 14px; color: #666;">
-                        <span><strong>URL:</strong> {{.URL}}</span>
-                        <span><strong>API Key:</strong> {{.APIKey}}</span>
                         <span><strong>Status:</strong> 
                             {{if .Active}}
                                 <span class="status-active">Active</span>
@@ -348,30 +334,18 @@
                 <form method="post">
                     <input type="hidden" name="action" value="update-provider">
                     <input type="hidden" name="id" value="{{.ID}}">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="form-group">
-                            <label for="edit-provider-name-{{.ID}}">Provider Name:</label>
-                            <input type="text" id="edit-provider-name-{{.ID}}" name="name" value="{{.Name}}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-provider-url-{{.ID}}">Provider URL:</label>
-                            <input type="url" id="edit-provider-url-{{.ID}}" name="url" value="{{.URL}}" required>
-                        </div>
+                    <div class="form-group">
+                        <label for="edit-provider-name-{{.ID}}">Provider Name:</label>
+                        <input type="text" id="edit-provider-name-{{.ID}}" name="name" value="{{.Name}}" required>
                     </div>
                     <div class="form-group">
                         <label for="edit-provider-description-{{.ID}}">Description:</label>
                         <textarea id="edit-provider-description-{{.ID}}" name="description">{{.Description}}</textarea>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end;">
-                        <div class="form-group">
-                            <label for="edit-provider-api-key-{{.ID}}">API Key:</label>
-                            <input type="text" id="edit-provider-api-key-{{.ID}}" name="api_key" value="{{.APIKey}}">
-                        </div>
-                        <div class="form-group">
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="edit-provider-active-{{.ID}}" name="active" {{if .Active}}checked{{end}}>
-                                <label for="edit-provider-active-{{.ID}}">Active</label>
-                            </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="edit-provider-active-{{.ID}}" name="active" {{if .Active}}checked{{end}}>
+                            <label for="edit-provider-active-{{.ID}}">Active</label>
                         </div>
                     </div>
                     <button type="submit" class="btn">Update Provider</button>
