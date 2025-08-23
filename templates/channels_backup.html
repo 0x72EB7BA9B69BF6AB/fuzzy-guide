@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #444;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        .navigation {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .navigation a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .navigation a:hover {
+            background-color: #0056b3;
+        }
+        .form-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        table tr:hover {
+            background-color: #f8f9fa;
+        }
+        .actions {
+            white-space: nowrap;
+        }
+        .actions button, .actions a {
+            margin-right: 10px;
+        }
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .edit-form {
+            display: none;
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+    <script>
+        function showEditForm(id) {
+            document.getElementById('edit-form-' + id).style.display = 'block';
+        }
+        function hideEditForm(id) {
+            document.getElementById('edit-form-' + id).style.display = 'none';
+        }
+        function confirmDelete(id, name) {
+            return confirm('Are you sure you want to delete the channel "' + name + '"?');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Channel Management</h1>
+        
+        <div class="navigation">
+            <a href="/">Home</a>
+            <a href="/providers">Providers</a>
+            <a href="/channels">Channels</a>
+            <a href="/users">Users</a>
+        </div>
+
+        {{if .Message}}
+        <div class="message success">{{.Message}}</div>
+        {{end}}
+        
+        {{if .Error}}
+        <div class="message error">{{.Error}}</div>
+        {{end}}
+
+        <!-- Create New Channel Form -->
+        <div class="form-section">
+            <h2>Create New Channel</h2>
+            <form method="post">
+                <input type="hidden" name="action" value="create">
+                
+                <!-- Basic Channel Information -->
+                <div style="border-bottom: 2px solid #e9ecef; padding-bottom: 20px; margin-bottom: 20px;">
+                    <h3 style="color: #495057; margin-bottom: 15px;">📺 Basic Information</h3>
+                    <div class="form-group">
+                        <label for="name">Channel Name:</label>
+                        <input type="text" id="name" name="name" required placeholder="BBC One">
+                    </div>
+                    <div class="form-group">
+                        <label for="manifest">Manifest URL:</label>
+                        <input type="url" id="manifest" name="manifest" required placeholder="https://manifest.bbc.co.uk/bbc1/manifest.mpd">
+                    </div>
+                    <div class="form-group">
+                        <label for="key_kid">Key:Kid:</label>
+                        <input type="text" id="key_kid" name="key_kid" required placeholder="bbc1-key-001">
+                    </div>
+                </div>
+
+                <!-- Video Encoding Settings -->
+                <div style="border-bottom: 2px solid #e9ecef; padding-bottom: 20px; margin-bottom: 20px;">
+                    <h3 style="color: #495057; margin-bottom: 15px;">🎬 Video Encoding</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label for="video_codec">Video Codec:</label>
+                            <select id="video_codec" name="video_codec" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="x264">H.264 (x264) - Compatible</option>
+                                <option value="x265" selected>H.265 (x265) - Efficient</option>
+                                <option value="AV1">AV1 - Next-gen</option>
+                                <option value="VP9">VP9 - Web optimized</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="resolution">Resolution:</label>
+                            <select id="resolution" name="resolution" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="720p">720p HD</option>
+                                <option value="1080p" selected>1080p Full HD</option>
+                                <option value="1440p">1440p QHD</option>
+                                <option value="2160p">2160p 4K UHD</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="video_bitrate">Video Bitrate:</label>
+                            <select id="video_bitrate" name="video_bitrate" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="2000k">2000k - Low</option>
+                                <option value="3000k">3000k - Medium</option>
+                                <option value="5000k" selected>5000k - High</option>
+                                <option value="8000k">8000k - Very High</option>
+                                <option value="15000k">15000k - 4K Standard</option>
+                                <option value="25000k">25000k - 4K Premium</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quality">Quality Preset:</label>
+                            <select id="quality" name="quality" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="Low">Low - Fast encoding</option>
+                                <option value="Medium" selected>Medium - Balanced</option>
+                                <option value="High">High - Best quality</option>
+                                <option value="Ultra">Ultra - Premium</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Encoding Settings -->
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #495057; margin-bottom: 15px;">🔊 Audio Encoding</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label for="audio_codec">Audio Codec:</label>
+                            <select id="audio_codec" name="audio_codec" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="AAC" selected>AAC - Standard</option>
+                                <option value="MP3">MP3 - Compatible</option>
+                                <option value="AC3">AC3 - Dolby Digital</option>
+                                <option value="DTS">DTS - Cinema</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="audio_bitrate">Audio Bitrate:</label>
+                            <select id="audio_bitrate" name="audio_bitrate" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="96k">96k - Low</option>
+                                <option value="128k" selected>128k - Standard</option>
+                                <option value="192k">192k - High</option>
+                                <option value="256k">256k - Premium</option>
+                                <option value="320k">320k - Maximum</option>
+                                <option value="512k">512k - Lossless</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" style="background-color: #28a745; font-size: 16px; padding: 12px 30px;">✨ Create Channel</button>
+            </form>
+        </div>
+
+        <!-- Channels List -->
+        <h2>Existing Channels</h2>
+        {{if .Channels}}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Video Settings</th>
+                    <th>Audio Settings</th>
+                    <th>Manifest URL</th>
+                    <th>Key:Kid</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Channels}}
+                <tr>
+                    <td>{{.ID}}</td>
+                    <td><strong>{{.Name}}</strong></td>
+                    <td>
+                        <div style="font-size: 12px;">
+                            <div><strong>Codec:</strong> {{.VideoCodec}}</div>
+                            <div><strong>Res:</strong> {{.Resolution}}</div>
+                            <div><strong>Bitrate:</strong> {{.VideoBitrate}}</div>
+                            <div><strong>Quality:</strong> {{.Quality}}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="font-size: 12px;">
+                            <div><strong>Codec:</strong> {{.AudioCodec}}</div>
+                            <div><strong>Bitrate:</strong> {{.AudioBitrate}}</div>
+                        </div>
+                    </td>
+                    <td><small style="word-break: break-all;">{{.Manifest}}</small></td>
+                    <td><small>{{.KeyKid}}</small></td>
+                    <td><small>{{.CreatedAt.Format "2006-01-02 15:04"}}</small></td>
+                    <td class="actions">
+                        <button type="button" class="btn btn-warning" onclick="showEditForm({{.ID}})">Edit</button>
+                        <a href="?delete={{.ID}}" class="btn btn-danger" onclick="return confirmDelete({{.ID}}, '{{.Name}}')">Delete</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                        <div id="edit-form-{{.ID}}" class="edit-form">
+                            <h3>Edit Channel: {{.Name}}</h3>
+                            <form method="post">
+                                <input type="hidden" name="action" value="update">
+                                <input type="hidden" name="id" value="{{.ID}}">
+                                
+                                <!-- Basic Information -->
+                                <div style="border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px;">
+                                    <h4 style="color: #495057; margin-bottom: 10px;">📺 Basic Information</h4>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                                        <div class="form-group">
+                                            <label for="edit-name-{{.ID}}">Channel Name:</label>
+                                            <input type="text" id="edit-name-{{.ID}}" name="name" value="{{.Name}}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit-manifest-{{.ID}}">Manifest URL:</label>
+                                            <input type="url" id="edit-manifest-{{.ID}}" name="manifest" value="{{.Manifest}}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit-key-kid-{{.ID}}">Key:Kid:</label>
+                                            <input type="text" id="edit-key-kid-{{.ID}}" name="key_kid" value="{{.KeyKid}}" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Video Encoding -->
+                                <div style="border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px;">
+                                    <h4 style="color: #495057; margin-bottom: 10px;">🎬 Video Encoding</h4>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;">
+                                        <div class="form-group">
+                                            <label for="edit-video-codec-{{.ID}}">Video Codec:</label>
+                                            <select id="edit-video-codec-{{.ID}}" name="video_codec" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                                <option value="x264" {{if eq .VideoCodec "x264"}}selected{{end}}>H.264 (x264)</option>
+                                                <option value="x265" {{if eq .VideoCodec "x265"}}selected{{end}}>H.265 (x265)</option>
+                                                <option value="AV1" {{if eq .VideoCodec "AV1"}}selected{{end}}>AV1</option>
+                                                <option value="VP9" {{if eq .VideoCodec "VP9"}}selected{{end}}>VP9</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit-resolution-{{.ID}}">Resolution:</label>
+                                            <select id="edit-resolution-{{.ID}}" name="resolution" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                                <option value="720p" {{if eq .Resolution "720p"}}selected{{end}}>720p HD</option>
+                                                <option value="1080p" {{if eq .Resolution "1080p"}}selected{{end}}>1080p Full HD</option>
+                                                <option value="1440p" {{if eq .Resolution "1440p"}}selected{{end}}>1440p QHD</option>
+                                                <option value="2160p" {{if eq .Resolution "2160p"}}selected{{end}}>2160p 4K UHD</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit-video-bitrate-{{.ID}}">Video Bitrate:</label>
+                                            <select id="edit-video-bitrate-{{.ID}}" name="video_bitrate" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                                <option value="2000k" {{if eq .VideoBitrate "2000k"}}selected{{end}}>2000k - Low</option>
+                                                <option value="3000k" {{if eq .VideoBitrate "3000k"}}selected{{end}}>3000k - Medium</option>
+                                                <option value="5000k" {{if eq .VideoBitrate "5000k"}}selected{{end}}>5000k - High</option>
+                                                <option value="8000k" {{if eq .VideoBitrate "8000k"}}selected{{end}}>8000k - Very High</option>
+                                                <option value="15000k" {{if eq .VideoBitrate "15000k"}}selected{{end}}>15000k - 4K Standard</option>
+                                                <option value="25000k" {{if eq .VideoBitrate "25000k"}}selected{{end}}>25000k - 4K Premium</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit-quality-{{.ID}}">Quality:</label>
+                                            <select id="edit-quality-{{.ID}}" name="quality" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                                <option value="Low" {{if eq .Quality "Low"}}selected{{end}}>Low</option>
+                                                <option value="Medium" {{if eq .Quality "Medium"}}selected{{end}}>Medium</option>
+                                                <option value="High" {{if eq .Quality "High"}}selected{{end}}>High</option>
+                                                <option value="Ultra" {{if eq .Quality "Ultra"}}selected{{end}}>Ultra</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Audio Encoding -->
+                                <div style="margin-bottom: 15px;">
+                                    <h4 style="color: #495057; margin-bottom: 10px;">🔊 Audio Encoding</h4>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        <div class="form-group">
+                                            <label for="edit-audio-codec-{{.ID}}">Audio Codec:</label>
+                                            <select id="edit-audio-codec-{{.ID}}" name="audio_codec" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                                <option value="AAC" {{if eq .AudioCodec "AAC"}}selected{{end}}>AAC - Standard</option>
+                                                <option value="MP3" {{if eq .AudioCodec "MP3"}}selected{{end}}>MP3 - Compatible</option>
+                                                <option value="AC3" {{if eq .AudioCodec "AC3"}}selected{{end}}>AC3 - Dolby Digital</option>
+                                                <option value="DTS" {{if eq .AudioCodec "DTS"}}selected{{end}}>DTS - Cinema</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit-audio-bitrate-{{.ID}}">Audio Bitrate:</label>
+                                            <select id="edit-audio-bitrate-{{.ID}}" name="audio_bitrate" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                                <option value="96k" {{if eq .AudioBitrate "96k"}}selected{{end}}>96k - Low</option>
+                                                <option value="128k" {{if eq .AudioBitrate "128k"}}selected{{end}}>128k - Standard</option>
+                                                <option value="192k" {{if eq .AudioBitrate "192k"}}selected{{end}}>192k - High</option>
+                                                <option value="256k" {{if eq .AudioBitrate "256k"}}selected{{end}}>256k - Premium</option>
+                                                <option value="320k" {{if eq .AudioBitrate "320k"}}selected{{end}}>320k - Maximum</option>
+                                                <option value="512k" {{if eq .AudioBitrate "512k"}}selected{{end}}>512k - Lossless</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="text-align: right;">
+                                    <button type="submit" class="btn" style="background-color: #28a745; margin-right: 10px;">💾 Update Channel</button>
+                                    <button type="button" class="btn btn-warning" onclick="hideEditForm({{.ID}})">❌ Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        {{else}}
+        <p>No channels found. Create your first channel using the form above.</p>
+        {{end}}
+    </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,52 +10,52 @@
     <div class="form-container">
         <div class="form-card form-card-wide fade-in">
             <div class="icon-center">
-                <div class="icon icon-xl">🚀</div>
+                <div class="icon icon-xl">⚡</div>
             </div>
             
-            <h1 class="text-center">Bienvenue dans Fuzzy!</h1>
-            <p class="subtitle text-center">Configuration initiale</p>
+            <h1 class="text-center">Welcome to Fuzzy!</h1>
+            <p class="subtitle text-center">Initial Setup</p>
             
             <div class="welcome-text text-center">
-                <p>Bienvenue sur votre nouveau serveur web Fuzzy! Pour commencer, veuillez créer votre compte administrateur. Ce compte vous permettra de gérer les fournisseurs, les chaînes et les autres utilisateurs.</p>
+                <p>Welcome to your new Fuzzy web server! To get started, please create your administrator account. This account will allow you to manage providers, channels, and other users.</p>
             </div>
 
             {{if .Error}}
             <div class="message message-error">
-                <strong>Erreur:</strong> {{.Error}}
+                <strong>Error:</strong> {{.Error}}
             </div>
             {{end}}
 
             <form method="post">
                 <div class="form-group">
-                    <label for="username">Nom d'utilisateur:</label>
+                    <label for="username">Username:</label>
                     <input type="text" id="username" name="username" required autocomplete="username">
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Email (optionnel):</label>
+                    <label for="email">Email (optional):</label>
                     <input type="email" id="email" name="email" autocomplete="email">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="password">Mot de passe:</label>
+                        <label for="password">Password:</label>
                         <input type="password" id="password" name="password" required autocomplete="new-password">
                         <small class="text-muted">
-                            Le mot de passe doit contenir:<br>
-                            • Au moins 8 caractères<br>
-                            • Une lettre majuscule et minuscule<br>
-                            • Un chiffre et un caractère spécial (!@#$%^&*)
+                            Password must contain:<br>
+                            • At least 8 characters<br>
+                            • One uppercase and lowercase letter<br>
+                            • One number and one special character (!@#$%^&*)
                         </small>
                     </div>
 
                     <div class="form-group">
-                        <label for="confirm_password">Confirmer le mot de passe:</label>
+                        <label for="confirm_password">Confirm Password:</label>
                         <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password">
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block btn-lg">Créer le compte administrateur</button>
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Create Administrator Account</button>
             </form>
         </div>
     </div>
@@ -67,7 +67,7 @@
             const confirmPassword = this.value;
             
             if (password !== confirmPassword) {
-                this.setCustomValidity('Les mots de passe ne correspondent pas');
+                this.setCustomValidity('Passwords do not match');
             } else {
                 this.setCustomValidity('');
             }
@@ -78,24 +78,24 @@
             const password = this.value;
             const indicators = [];
             
-            if (password.length >= 8) indicators.push('✓ Au moins 8 caractères');
-            else indicators.push('✗ Au moins 8 caractères');
+            if (password.length >= 8) indicators.push('✓ At least 8 characters');
+            else indicators.push('✗ At least 8 characters');
             
-            if (/[A-Z]/.test(password)) indicators.push('✓ Lettre majuscule');
-            else indicators.push('✗ Lettre majuscule');
+            if (/[A-Z]/.test(password)) indicators.push('✓ Uppercase letter');
+            else indicators.push('✗ Uppercase letter');
             
-            if (/[a-z]/.test(password)) indicators.push('✓ Lettre minuscule');
-            else indicators.push('✗ Lettre minuscule');
+            if (/[a-z]/.test(password)) indicators.push('✓ Lowercase letter');
+            else indicators.push('✗ Lowercase letter');
             
-            if (/[0-9]/.test(password)) indicators.push('✓ Chiffre');
-            else indicators.push('✗ Chiffre');
+            if (/[0-9]/.test(password)) indicators.push('✓ Number');
+            else indicators.push('✗ Number');
             
-            if (/[!@#$%^&*]/.test(password)) indicators.push('✓ Caractère spécial');
-            else indicators.push('✗ Caractère spécial');
+            if (/[!@#$%^&*]/.test(password)) indicators.push('✓ Special character');
+            else indicators.push('✗ Special character');
             
             // Update the small text with indicators
             const smallText = this.parentNode.querySelector('small');
-            smallText.innerHTML = 'Le mot de passe doit contenir:<br>' + indicators.join('<br>');
+            smallText.innerHTML = 'Password must contain:<br>' + indicators.join('<br>');
         });
     </script>
 </body>

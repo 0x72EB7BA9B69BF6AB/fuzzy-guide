@@ -391,12 +391,19 @@ small {
   color: var(--text-light);
   text-decoration: none;
   border-radius: var(--radius-md);
-  transition: background-color var(--transition-fast);
+  transition: all var(--transition-fast);
   font-weight: 500;
+  box-shadow: var(--shadow-sm);
+  font-size: var(--font-size-base);
+  min-width: 120px;
+  justify-content: center;
 }
 
 .nav-link:hover {
   background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  color: var(--text-light);
 }
 
 /* =========================
@@ -536,6 +543,19 @@ ul {
 li {
   margin-bottom: var(--spacing-sm);
   color: var(--text-secondary);
+}
+
+/* Additional utility classes */
+.mb-5 { margin-bottom: var(--spacing-xl); }
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin: 0;
 }
 
 /* =========================

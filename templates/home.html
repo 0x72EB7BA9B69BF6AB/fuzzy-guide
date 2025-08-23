@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuzzy - Tableau de bord</title>
+    <title>Fuzzy - Dashboard</title>
     <link rel="stylesheet" href="/static/css/fuzzy.css">
 </head>
 <body>
@@ -11,49 +11,49 @@
         <div class="content-wrapper">
             <div class="container">
                 <div class="text-center mb-5">
-                    <div class="icon icon-xl">🏠</div>
+                    <div class="icon icon-xl">⌂</div>
                     <h1>{{.WelcomeMsg}}</h1>
                 </div>
                 
                 <div class="navigation">
                     <a href="/providers" class="nav-link">
-                        📡 Fournisseurs
+                        ⚡ Providers
                     </a>
                     <a href="/channels" class="nav-link">
-                        📺 Chaînes
+                        ◈ Channels
                     </a>
                     <a href="/users" class="nav-link">
-                        👥 Utilisateurs
+                        ⚪ Users
                     </a>
                 </div>
                 
                 <div class="logout-section text-center">
                     <form method="post" action="/logout" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Se déconnecter</button>
+                        <button type="submit" class="btn btn-danger">Sign Out</button>
                     </form>
                 </div>
                 
                 <div class="form-card" style="max-width: 800px; margin: 0 auto;">
-                    <h2>🚀 Serveur Web Fuzzy</h2>
-                    <p>Bienvenue sur votre serveur web Go propre, simple et efficace. Le serveur est conçu pour être léger et facile à comprendre.</p>
+                    <h2>⚡ Fuzzy Web Server</h2>
+                    <p>Welcome to your clean, simple and efficient Go web server. The server is designed to be lightweight and easy to understand.</p>
                     
-                    <h3>Fonctionnalités:</h3>
+                    <h3>Features:</h3>
                     <ul>
-                        <li>Code Go propre avec gestion d'erreurs appropriée</li>
-                        <li>Rendu de templates HTML simple</li>
-                        <li>Design responsive et moderne</li>
-                        <li>Routage HTTP efficace</li>
-                        <li>Authentification utilisateur sécurisée avec bcrypt</li>
-                        <li>Gestion de sessions améliorée</li>
-                        <li>Gestion de bouquets pour les fournisseurs</li>
-                        <li>Système de gestion des utilisateurs</li>
-                        <li>Configuration centralisée via fichier .cfg</li>
-                        <li>Protection contre les attaques par force brute</li>
+                        <li>Clean Go code with proper error handling</li>
+                        <li>Simple HTML template rendering</li>
+                        <li>Responsive and modern design</li>
+                        <li>Efficient HTTP routing</li>
+                        <li>Secure user authentication with bcrypt</li>
+                        <li>Enhanced session management</li>
+                        <li>Bouquet management for providers</li>
+                        <li>User management system</li>
+                        <li>Centralized configuration via .cfg file</li>
+                        <li>Protection against brute force attacks</li>
                     </ul>
                 </div>
                 
                 <div class="time-display">
-                    ⏰ Heure actuelle du serveur: {{.CurrentTime}}
+                    ⏰ Current server time: {{.CurrentTime}}
                 </div>
             </div>
         </div>
