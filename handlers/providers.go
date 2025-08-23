@@ -98,10 +98,6 @@ func handleCreateProvider(r *http.Request, data *models.ProvidersWithBouquetsPag
 		data.Error = "Provider name is required"
 		return
 	}
-	if url == "" {
-		data.Error = "Provider URL is required"
-		return
-	}
 
 	// Create provider
 	provider := models.Provider{
@@ -140,10 +136,6 @@ func handleUpdateProvider(r *http.Request, data *models.ProvidersWithBouquetsPag
 	// Validate input
 	if name == "" {
 		data.Error = "Provider name is required"
-		return
-	}
-	if url == "" {
-		data.Error = "Provider URL is required"
 		return
 	}
 
