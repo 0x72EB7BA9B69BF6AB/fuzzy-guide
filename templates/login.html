@@ -1,117 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Title}}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .login-container {
-            max-width: 400px;
-            width: 100%;
-            background-color: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-weight: bold;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        input[type="text"]:focus, input[type="password"]:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-        .btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .message {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            text-align: center;
-        }
-        .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .message.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .icon {
-            text-align: center;
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/fuzzy.css">
 </head>
 <body>
-    <div class="login-container">
-        <div class="icon">🔐</div>
-        <h1>Login to Fuzzy</h1>
-
-        {{if .Error}}
-        <div class="message error">{{.Error}}</div>
-        {{end}}
-
-        {{if .Message}}
-        <div class="message success">{{.Message}}</div>
-        {{end}}
-
-        <form method="post">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+    <div class="form-container">
+        <div class="form-card fade-in">
+            <div class="icon-center">
+                <div class="icon icon-xl">🔐</div>
             </div>
+            
+            <h1 class="text-center">Connexion à Fuzzy</h1>
+            <p class="subtitle text-center">Accédez à votre tableau de bord</p>
 
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+            {{if .Error}}
+            <div class="message message-error">
+                <strong>Erreur:</strong> {{.Error}}
             </div>
+            {{end}}
 
-            <button type="submit" class="btn">Login</button>
-        </form>
+            {{if .Message}}
+            <div class="message message-success">{{.Message}}</div>
+            {{end}}
+
+            <form method="post">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur:</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe:</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Se connecter</button>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -119,8 +47,8 @@
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('setup') === 'complete') {
             const messageDiv = document.createElement('div');
-            messageDiv.className = 'message success';
-            messageDiv.textContent = 'Setup completed successfully! Please login with your new account.';
+            messageDiv.className = 'message message-success';
+            messageDiv.innerHTML = '<strong>Configuration terminée!</strong> Veuillez vous connecter avec votre nouveau compte.';
             const form = document.querySelector('form');
             form.parentNode.insertBefore(messageDiv, form);
         }

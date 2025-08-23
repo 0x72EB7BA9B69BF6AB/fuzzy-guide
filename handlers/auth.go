@@ -1,6 +1,9 @@
 package handlers
 
 import (
+	"crypto/rand"
+	"encoding/hex"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -8,17 +11,15 @@ import (
 	"strings"
 	"time"
 
+	"fuzzy/config"
 	"fuzzy/models"
 )
 
-// Session management constants
-const (
-	SessionCookieName = "fuzzy_session"
-	SessionDuration   = 24 * time.Hour
+// Session management constants and variables
+var (
+	sessions = make(map[string]int) // sessionID -> userID
+	loginAttempts = make(map[string][]time.Time) // IP -> attempt times
 )
-
-// Simple in-memory session store
-var sessions = make(map[string]int) // sessionID -> userID
 
 // LoginHandler handles the login page and authentication
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +41,7 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get session cookie
-	cookie, err := r.Cookie(SessionCookieName)
+	cookie, err := r.Cookie(config.AppConfig.Security.SessionCookieName)
 	if err == nil {
 		// Remove session from store
 		delete(sessions, cookie.Value)
@@ -48,12 +49,13 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Clear cookie
 	http.SetCookie(w, &http.Cookie{
-		Name:     SessionCookieName,
+		Name:     config.AppConfig.Security.SessionCookieName,
 		Value:    "",
 		Path:     "/",
 		MaxAge:   -1,
 		HttpOnly: true,
-		Secure:   false, // Set to true in production with HTTPS
+		Secure:   config.AppConfig.Security.HTTPSEnabled,
+		SameSite: http.SameSiteStrictMode,
 	})
 
 	// Redirect to login
@@ -96,11 +98,23 @@ func handlePostLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check rate limiting
+	clientIP := getClientIP(r)
+	if isRateLimited(clientIP) {
+		data := models.LoginPageData{
+			Title: "Fuzzy - Login",
+			Error: "Too many login attempts. Please wait before trying again.",
+		}
+		renderLoginTemplate(w, &data)
+		return
+	}
+
 	username := strings.TrimSpace(r.FormValue("username"))
 	password := r.FormValue("password")
 
 	// Validate input
 	if username == "" || password == "" {
+		recordLoginAttempt(clientIP)
 		data := models.LoginPageData{
 			Title: "Fuzzy - Login",
 			Error: "Username and password are required",
@@ -112,6 +126,7 @@ func handlePostLogin(w http.ResponseWriter, r *http.Request) {
 	// Check user credentials
 	user, exists := models.GlobalStore.GetUserByUsername(username)
 	if !exists || !user.CheckPassword(password) {
+		recordLoginAttempt(clientIP)
 		data := models.LoginPageData{
 			Title: "Fuzzy - Login",
 			Error: "Invalid username or password",
@@ -122,6 +137,7 @@ func handlePostLogin(w http.ResponseWriter, r *http.Request) {
 
 	// Check if user is active
 	if !user.Active {
+		recordLoginAttempt(clientIP)
 		data := models.LoginPageData{
 			Title: "Fuzzy - Login",
 			Error: "Account is disabled",
@@ -130,18 +146,22 @@ func handlePostLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Successful login - clear attempts
+	clearLoginAttempts(clientIP)
+
 	// Create session
 	sessionID := generateSessionID()
 	sessions[sessionID] = user.ID
 
 	// Set session cookie
 	http.SetCookie(w, &http.Cookie{
-		Name:     SessionCookieName,
+		Name:     config.AppConfig.Security.SessionCookieName,
 		Value:    sessionID,
 		Path:     "/",
-		MaxAge:   int(SessionDuration.Seconds()),
+		MaxAge:   int(config.AppConfig.GetSessionDuration().Seconds()),
 		HttpOnly: true,
-		Secure:   false, // Set to true in production with HTTPS
+		Secure:   config.AppConfig.Security.HTTPSEnabled,
+		SameSite: http.SameSiteStrictMode,
 	})
 
 	// Redirect to home
@@ -185,6 +205,16 @@ func handlePostSetup(w http.ResponseWriter, r *http.Request) {
 		data := models.SetupPageData{
 			Title: "Fuzzy - First Time Setup",
 			Error: "Password is required",
+		}
+		renderSetupTemplate(w, &data)
+		return
+	}
+
+	// Validate password strength
+	if err := validatePasswordStrength(password); err != nil {
+		data := models.SetupPageData{
+			Title: "Fuzzy - First Time Setup",
+			Error: err.Error(),
 		}
 		renderSetupTemplate(w, &data)
 		return
@@ -257,14 +287,19 @@ func renderSetupTemplate(w http.ResponseWriter, data *models.SetupPageData) {
 	}
 }
 
-// generateSessionID creates a simple session ID (in production, use crypto/rand)
+// generateSessionID creates a cryptographically secure session ID
 func generateSessionID() string {
-	return time.Now().Format("20060102150405") + "-" + time.Now().Format("999999999")
+	bytes := make([]byte, 32)
+	if _, err := rand.Read(bytes); err != nil {
+		// Fallback to time-based ID if crypto/rand fails
+		return time.Now().Format("20060102150405") + "-" + time.Now().Format("999999999")
+	}
+	return hex.EncodeToString(bytes)
 }
 
 // GetCurrentUser returns the current authenticated user
 func GetCurrentUser(r *http.Request) (models.User, bool) {
-	cookie, err := r.Cookie(SessionCookieName)
+	cookie, err := r.Cookie(config.AppConfig.Security.SessionCookieName)
 	if err != nil {
 		return models.User{}, false
 	}
@@ -276,4 +311,85 @@ func GetCurrentUser(r *http.Request) (models.User, bool) {
 
 	user, exists := models.GlobalStore.GetUser(userID)
 	return user, exists
+}
+
+// Rate limiting functions
+func getClientIP(r *http.Request) string {
+	// Check for forwarded headers first
+	if ip := r.Header.Get("X-Forwarded-For"); ip != "" {
+		return strings.Split(ip, ",")[0]
+	}
+	if ip := r.Header.Get("X-Real-IP"); ip != "" {
+		return ip
+	}
+	return r.RemoteAddr
+}
+
+func isRateLimited(clientIP string) bool {
+	attempts, exists := loginAttempts[clientIP]
+	if !exists {
+		return false
+	}
+
+	// Clean old attempts
+	cutoff := time.Now().Add(-time.Duration(config.AppConfig.Limits.LoginTimeoutMinutes) * time.Minute)
+	var validAttempts []time.Time
+	for _, attempt := range attempts {
+		if attempt.After(cutoff) {
+			validAttempts = append(validAttempts, attempt)
+		}
+	}
+	loginAttempts[clientIP] = validAttempts
+
+	return len(validAttempts) >= config.AppConfig.Limits.MaxLoginAttempts
+}
+
+func recordLoginAttempt(clientIP string) {
+	loginAttempts[clientIP] = append(loginAttempts[clientIP], time.Now())
+}
+
+func clearLoginAttempts(clientIP string) {
+	delete(loginAttempts, clientIP)
+}
+
+// validatePasswordStrength checks if password meets security requirements
+func validatePasswordStrength(password string) error {
+	if len(password) < 8 {
+		return fmt.Errorf("le mot de passe doit contenir au moins 8 caractères")
+	}
+
+	var (
+		hasUpper   = false
+		hasLower   = false
+		hasNumber  = false
+		hasSpecial = false
+	)
+
+	for _, char := range password {
+		switch {
+		case 'A' <= char && char <= 'Z':
+			hasUpper = true
+		case 'a' <= char && char <= 'z':
+			hasLower = true
+		case '0' <= char && char <= '9':
+			hasNumber = true
+		case char == '!' || char == '@' || char == '#' || char == '$' || char == '%' || char == '^' || char == '&' || char == '*':
+			hasSpecial = true
+		}
+	}
+
+	if !hasUpper {
+		return fmt.Errorf("le mot de passe doit contenir au moins une lettre majuscule")
+	}
+	if !hasLower {
+		return fmt.Errorf("le mot de passe doit contenir au moins une lettre minuscule")
+	}
+	if !hasNumber {
+		return fmt.Errorf("le mot de passe doit contenir au moins un chiffre")
+	}
+	if !hasSpecial {
+		return fmt.Errorf("le mot de passe doit contenir au moins un caractère spécial (!@#$%^&*)")
+	}
+
+	return nil
 }
