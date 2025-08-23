@@ -35,3 +35,16 @@ go.work
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Configuration files with user data (keep template)
+config/config.cfg
+
+# Application data and logs
+logs/
+data/
+*.log
+
+# Temporary files
+/tmp/
+*.tmp
+*.temp
